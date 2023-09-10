@@ -1,4 +1,9 @@
-<img src="imgs/icons8-puzzle-500.png" width="64" height="64" align="left"></img>
-# CMake template project
-Clone the repo and modify CMakeLists.txt.
+# ZHBK1 app
+Build:
+```
+git pull                # sync changes
+cd collections/zhbk1    # go to directory
+./build.bat             # on windows
+./build.sh              # on unix (macos, linux)
+```
 
