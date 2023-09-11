@@ -1,5 +1,7 @@
 #include "zhbk.h"
 
+#define PARAM_NAME_LENGTH 256
+
 struct ZHBKConfigParams zhbk_parse_config_params(const char *config_file) {
     struct ZHBKConfigParams params = {};
 
@@ -10,7 +12,7 @@ struct ZHBKConfigParams zhbk_parse_config_params(const char *config_file) {
     vt_plist_t *lines = vt_str_split(NULL, config_contents, "\n");
     VT_FOREACH(i, 0, vt_plist_len(lines)) {
         vt_str_t *line = (vt_str_t*)vt_plist_get(lines, i);
-        VT_ENFORCE(vt_str_len(line) < 256, "Param name is longer than 256 characters!");
+        VT_ENFORCE(vt_str_len(line) < PARAM_NAME_LENGTH, "Param name is longer than 256 characters!");
 
         // skip comments
         if (vt_str_z(line)[0] == '#' || !isalpha(vt_str_z(line)[0])) {
@@ -18,7 +20,7 @@ struct ZHBKConfigParams zhbk_parse_config_params(const char *config_file) {
         }
         
         // get data
-        char name[256] = {};
+        char name[PARAM_NAME_LENGTH] = {};
         float value = 0;
         sscanf(vt_str_z(line), "%s : %f", name, &value);
 
