@@ -22,9 +22,15 @@ struct ZHBKConfigParams zhbk_parse_config_params(const char *config_file) {
         // get data
         char name[PARAM_NAME_LENGTH] = {};
         float value = 0;
-        sscanf(vt_str_z(line), "%s : %f", name, &value);
 
-        // save values
+        // save values (strings)
+        if(vt_str_starts_with(vt_str_z(line), "Klass_betona")) {
+            sscanf(vt_str_z(line), "%s : %s", name, params.concrete_class);
+            continue;
+        }
+
+        // save values (floats)
+        sscanf(vt_str_z(line), "%s : %f", name, &value);
         if (vt_str_equals(name, "Zdanie_L")) {
             params.zdanie_L = M2MM(value);
         } else if (vt_str_equals(name, "Zdanie_B")) {

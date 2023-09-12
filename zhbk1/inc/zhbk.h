@@ -24,6 +24,9 @@ struct ZHBKConfigParams {
         plotnost_sloy_2,
         plotnost_sloy_3,
         plotnost_sloy_4;
+
+        // R3
+    char concrete_class[12];
 };
 
 struct ZHBKCalcParams {
@@ -42,6 +45,8 @@ struct ZHBKCalcParams {
         plate_effective_span,
         temp_estimated_load,
         const_estimated_load;
+
+        // R3
 };
 
 struct ZHBKConfigParams zhbk_parse_config_params(const char *config_file);

@@ -16,7 +16,9 @@ int32_t main(void) {
     printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_1), params.plotnost_sloy_1);
     printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_2), params.plotnost_sloy_2);
     printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_3), params.plotnost_sloy_3);
-    printf("%34s: %.2f\n\n", VT_STRING_OF(params.plotnost_sloy_4), params.plotnost_sloy_4);
+    printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_4), params.plotnost_sloy_4);
+    printf("%34s\n", "--- R3 ---");
+    printf("%34s: %s\n\n", VT_STRING_OF(params.concrete_class), params.concrete_class);
 
     struct ZHBKCalcParams calc_params = zhbk_calc_params(params);
     printf("%34s\n", "CALCULATIONS");
@@ -33,6 +35,7 @@ int32_t main(void) {
     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_effective_span), calc_params.plate_effective_span);
     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.temp_estimated_load), calc_params.temp_estimated_load);
     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.const_estimated_load), calc_params.const_estimated_load);
+    printf("%34s\n", "--- R3 ---");
 
     return 0;
 }
