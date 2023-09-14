@@ -18,7 +18,7 @@ int32_t main(void) {
     printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_3), params.plotnost_sloy_3);
     printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_4), params.plotnost_sloy_4);
     printf("%34s\n", "--- R3 ---");
-    printf("%34s: %s\n\n", VT_STRING_OF(params.concrete_class), params.concrete_class);
+    printf("%34s: %d\n\n", VT_STRING_OF(params.kd_class), params.kd_class);
 
     struct ZHBKCalcParams calc_params = zhbk_calc_params(params);
     printf("%34s\n", "CALCULATIONS");
@@ -32,10 +32,29 @@ int32_t main(void) {
     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_thickness), calc_params.plate_thickness);
     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_width), calc_params.plate_width);
     printf("%34s\n", "--- R2 ---");
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_effective_span), calc_params.plate_effective_span);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_effective_width), calc_params.plate_effective_width);
     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.temp_estimated_load), calc_params.temp_estimated_load);
     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.const_estimated_load), calc_params.const_estimated_load);
     printf("%34s\n", "--- R3 ---");
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.sum_estimated_load), calc_params.sum_estimated_load);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.bend_moment1), calc_params.bend_moment1);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.bend_moment2), calc_params.bend_moment2);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_kd1), calc_params.coef_kd1);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_kd2), calc_params.coef_kd2);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_ks1), calc_params.coef_ks1);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_ks2), calc_params.coef_ks2);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as1), calc_params.coef_as1);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as2), calc_params.coef_as2);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as1_fact), calc_params.coef_as1_fact);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as2_fact), calc_params.coef_as2_fact);
+    printf("%34s: %d\n", VT_STRING_OF(calc_params.as1_d_armatura), calc_params.as1_d_armatura);
+    printf("%34s: %d\n", VT_STRING_OF(calc_params.as1_n_armatura), calc_params.as1_n_armatura);
+    printf("%34s: %d\n", VT_STRING_OF(calc_params.as2_d_armatura), calc_params.as2_d_armatura);
+    printf("%34s: %d\n", VT_STRING_OF(calc_params.as2_n_armatura), calc_params.as2_n_armatura);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step1_90), calc_params.armatura_step1_90);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step2_90), calc_params.armatura_step2_90);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step1_180), calc_params.armatura_step1_180);
+    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step2_180), calc_params.armatura_step2_180);
 
     return 0;
 }
