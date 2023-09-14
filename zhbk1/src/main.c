@@ -56,6 +56,105 @@ int32_t main(void) {
     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step1_180), calc_params.armatura_step1_180);
     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step2_180), calc_params.armatura_step2_180);
 
+    zhbk_gui_run();
+
     return 0;
+}
+
+void zhbk_gui_run(void) {
+    // platform
+    static GLFWwindow *window_handle = NULL;
+    int32_t window_width = 0, window_height = 0;
+    struct nk_glfw glfw_ctx = {0};
+    struct nk_context *nk_ctx = NULL;
+    struct nk_colorf window_bg = { 0.1f, 0.18f, 0.24f, 1.0f };
+
+    // setup GLFW
+    if (!glfwInit()) {
+        VT_LOG_ERROR("[GFLW] failed to init!\n");
+    }
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    #ifdef __APPLE__
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    #endif
+    window_handle = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "ZHBK CALC", NULL, NULL);
+    glfwMakeContextCurrent(window_handle);
+    glfwGetWindowSize(window_handle, &window_width, &window_height);
+
+    // setup OpenGL
+    glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+    glewExperimental = 1;
+    if (glewInit() != GLEW_OK) {
+        VT_LOG_ERROR("Failed to setup GLEW\n");
+    }
+
+    // initialize Nuklear GLFW context
+    nk_ctx = nk_glfw3_init(&glfw_ctx, window_handle, NK_GLFW3_INSTALL_CALLBACKS);
+    {
+        // initialize fonts: default font
+        struct nk_font_atlas *atlas = NULL;
+        nk_glfw3_font_stash_begin(&glfw_ctx, &atlas);
+        // struct nk_font *droid = nk_font_atlas_add_from_file(atlas, "../../../extra_font/DroidSans.ttf", 14, 0);
+        nk_glfw3_font_stash_end(&glfw_ctx);
+    }
+
+    // set style
+    set_style(nk_ctx, THEME_RED);
+    // set_style(nk_ctx, THEME_DARK);
+
+    // loop
+    char text_buffer[1024] = "hello, world!";
+    while(!glfwWindowShouldClose(window_handle)) {
+        // process events
+        glfwPollEvents();
+        nk_glfw3_new_frame(&glfw_ctx);
+
+        // describe GUI
+        if (nk_begin(nk_ctx, "INPUT", nk_rect(5, 5, WINDOW_WIDTH/2, WINDOW_HEIGHT/2), WINDOW_FLAGS)) {
+            // text: variable | input | text: measure unit
+            nk_layout_row_static(nk_ctx, 25, 120, 3);
+            {
+                // R1: row 1
+                nk_label(nk_ctx, "Zdanie_B", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, text_buffer, sizeof(text_buffer), nk_filter_default);
+                nk_label(nk_ctx, "meters", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+
+                // R1: row 2
+                nk_label(nk_ctx, "Zdanie_L", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, text_buffer, sizeof(text_buffer), nk_filter_default);
+                nk_label(nk_ctx, "meters", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+
+                // R1: row 3
+                nk_label(nk_ctx, "Setka_B", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, text_buffer, sizeof(text_buffer), nk_filter_default);
+                nk_label(nk_ctx, "meters", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                
+                // R1: row 4
+                nk_label(nk_ctx, "Setka_L", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, text_buffer, sizeof(text_buffer), nk_filter_default);
+                nk_label(nk_ctx, "meters", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+
+                // R1: row 4
+                nk_label(nk_ctx, "Vrem_nagruzka", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, text_buffer, sizeof(text_buffer), nk_filter_default);
+                nk_label(nk_ctx, "KN/m^2", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+            }
+        }
+        nk_end(nk_ctx);
+
+        // render GUI
+        glfwGetWindowSize(window_handle, &window_width, &window_height);
+        glViewport(0, 0, window_width, window_height);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor(window_bg.r, window_bg.g, window_bg.b, window_bg.a);
+        nk_glfw3_render(&glfw_ctx, NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
+        glfwSwapBuffers(window_handle);
+    }
+
+    // cleanup
+    nk_glfw3_shutdown(&glfw_ctx);
+    glfwTerminate();
 }
 
