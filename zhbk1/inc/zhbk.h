@@ -4,6 +4,7 @@
 #include <math.h>
 #include "vita/vita.h"
 #include "tabledata.h"
+#include "language.h"
 
 // meters to millimeters
 #define M2MM(m) (m * 1000)
@@ -13,6 +14,9 @@
 
 // millimeters to centimeters
 #define MM2CM(m) (m / 10)
+
+// ditto
+#define ZHBK_INPUT_LABEL_LENGTH 32
 
 struct ZHBKConfigParams {
     float 
@@ -78,12 +82,14 @@ struct ZHBKCalcParams {
         as2_n_armatura;
 };
 
-struct ZHBKConfigParams zhbk_parse_config_params(const char *config_file);
-struct ZHBKCalcParams zhbk_calc_params(const struct ZHBKConfigParams params);
+extern struct ZHBKConfigParams zhbk_parse_config_params(const char *config_file);
+extern struct ZHBKConfigParams zhbk_parse_params(const char zhbk_input_text[ZHBK_LABEL_COUNT][ZHBK_INPUT_LABEL_LENGTH]);
+extern struct ZHBKCalcParams zhbk_calc_params(const struct ZHBKConfigParams params);
 
-float zhbk_calc_wall_thickness_from_load(const float thickness);
-float zhbk_round_50(const float value);
-float zhbk_get_kd_class_value(const enum ZHBKKdClassHardness kd_class, const float coef_kd);
-float zhbk_get_asx_fact_value(const float coef_as, int32_t *d_armatura, int32_t *n_armatura);
+extern float zhbk_calc_wall_thickness_from_load(const float thickness);
+extern float zhbk_round_50(const float value);
+extern float zhbk_get_kd_class_value(const enum ZHBKKdClassHardness kd_class, const float coef_kd);
+extern float zhbk_get_asx_fact_value(const float coef_as, int32_t *d_armatura, int32_t *n_armatura);
+extern enum ZHBKKdClassHardness zhbk_conv_str_to_kd_class_hardness(const char *const text);
 
 #endif // ZHBK_H

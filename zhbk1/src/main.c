@@ -1,60 +1,60 @@
 #include "main.h"
 
 int32_t main(void) {
-    struct ZHBKConfigParams params = zhbk_parse_config_params("assets/zhbk1.conf");
-    printf("%34s\n", "PARAMS");
-    printf("%34s\n", "--- R1 ---");
-    printf("%34s: %.2f\n", VT_STRING_OF(params.zdanie_L), params.zdanie_L);
-    printf("%34s: %.2f\n", VT_STRING_OF(params.zdanie_B), params.zdanie_B);
-    printf("%34s: %.2f\n", VT_STRING_OF(params.setka_L), params.setka_L);
-    printf("%34s: %.2f\n", VT_STRING_OF(params.setka_B), params.setka_B);
-    printf("%34s\n", "--- R2 ---");
-    printf("%34s: %.2f\n", VT_STRING_OF(params.tolsina_sloy_1), params.tolsina_sloy_1);
-    printf("%34s: %.2f\n", VT_STRING_OF(params.tolsina_sloy_2), params.tolsina_sloy_2);
-    printf("%34s: %.2f\n", VT_STRING_OF(params.tolsina_sloy_3), params.tolsina_sloy_3);
-    printf("%34s: %.2f\n", VT_STRING_OF(params.tolsina_sloy_4), params.tolsina_sloy_4);
-    printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_1), params.plotnost_sloy_1);
-    printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_2), params.plotnost_sloy_2);
-    printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_3), params.plotnost_sloy_3);
-    printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_4), params.plotnost_sloy_4);
-    printf("%34s\n", "--- R3 ---");
-    printf("%34s: %d\n\n", VT_STRING_OF(params.kd_class), params.kd_class);
+    // struct ZHBKConfigParams params = zhbk_parse_config_params("assets/zhbk1.conf");
+    // printf("%34s\n", "PARAMS");
+    // printf("%34s\n", "--- R1 ---");
+    // printf("%34s: %.2f\n", VT_STRING_OF(params.zdanie_L), params.zdanie_L);
+    // printf("%34s: %.2f\n", VT_STRING_OF(params.zdanie_B), params.zdanie_B);
+    // printf("%34s: %.2f\n", VT_STRING_OF(params.setka_L), params.setka_L);
+    // printf("%34s: %.2f\n", VT_STRING_OF(params.setka_B), params.setka_B);
+    // printf("%34s\n", "--- R2 ---");
+    // printf("%34s: %.2f\n", VT_STRING_OF(params.tolsina_sloy_1), params.tolsina_sloy_1);
+    // printf("%34s: %.2f\n", VT_STRING_OF(params.tolsina_sloy_2), params.tolsina_sloy_2);
+    // printf("%34s: %.2f\n", VT_STRING_OF(params.tolsina_sloy_3), params.tolsina_sloy_3);
+    // printf("%34s: %.2f\n", VT_STRING_OF(params.tolsina_sloy_4), params.tolsina_sloy_4);
+    // printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_1), params.plotnost_sloy_1);
+    // printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_2), params.plotnost_sloy_2);
+    // printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_3), params.plotnost_sloy_3);
+    // printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_4), params.plotnost_sloy_4);
+    // printf("%34s\n", "--- R3 ---");
+    // printf("%34s: %d\n\n", VT_STRING_OF(params.kd_class), params.kd_class);
 
-    struct ZHBKCalcParams calc_params = zhbk_calc_params(params);
-    printf("%34s\n", "CALCULATIONS");
-    printf("%34s\n", "--- R1 ---");
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.main_beam_length), calc_params.main_beam_length);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.main_beam_height), calc_params.main_beam_height);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.main_beam_width), calc_params.main_beam_width);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.second_beam_length), calc_params.second_beam_length);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.second_beam_height), calc_params.second_beam_height);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.second_beam_width), calc_params.second_beam_width);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_thickness), calc_params.plate_thickness);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_width), calc_params.plate_width);
-    printf("%34s\n", "--- R2 ---");
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_effective_width), calc_params.plate_effective_width);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.temp_estimated_load), calc_params.temp_estimated_load);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.const_estimated_load), calc_params.const_estimated_load);
-    printf("%34s\n", "--- R3 ---");
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.sum_estimated_load), calc_params.sum_estimated_load);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.bend_moment1), calc_params.bend_moment1);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.bend_moment2), calc_params.bend_moment2);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_kd1), calc_params.coef_kd1);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_kd2), calc_params.coef_kd2);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_ks1), calc_params.coef_ks1);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_ks2), calc_params.coef_ks2);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as1), calc_params.coef_as1);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as2), calc_params.coef_as2);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as1_fact), calc_params.coef_as1_fact);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as2_fact), calc_params.coef_as2_fact);
-    printf("%34s: %d\n", VT_STRING_OF(calc_params.as1_d_armatura), calc_params.as1_d_armatura);
-    printf("%34s: %d\n", VT_STRING_OF(calc_params.as1_n_armatura), calc_params.as1_n_armatura);
-    printf("%34s: %d\n", VT_STRING_OF(calc_params.as2_d_armatura), calc_params.as2_d_armatura);
-    printf("%34s: %d\n", VT_STRING_OF(calc_params.as2_n_armatura), calc_params.as2_n_armatura);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step1_90), calc_params.armatura_step1_90);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step2_90), calc_params.armatura_step2_90);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step1_180), calc_params.armatura_step1_180);
-    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step2_180), calc_params.armatura_step2_180);
+    // struct ZHBKCalcParams calc_params = zhbk_calc_params(params);
+    // printf("%34s\n", "CALCULATIONS");
+    // printf("%34s\n", "--- R1 ---");
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.main_beam_length), calc_params.main_beam_length);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.main_beam_height), calc_params.main_beam_height);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.main_beam_width), calc_params.main_beam_width);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.second_beam_length), calc_params.second_beam_length);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.second_beam_height), calc_params.second_beam_height);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.second_beam_width), calc_params.second_beam_width);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_thickness), calc_params.plate_thickness);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_width), calc_params.plate_width);
+    // printf("%34s\n", "--- R2 ---");
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_effective_width), calc_params.plate_effective_width);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.temp_estimated_load), calc_params.temp_estimated_load);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.const_estimated_load), calc_params.const_estimated_load);
+    // printf("%34s\n", "--- R3 ---");
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.sum_estimated_load), calc_params.sum_estimated_load);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.bend_moment1), calc_params.bend_moment1);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.bend_moment2), calc_params.bend_moment2);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_kd1), calc_params.coef_kd1);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_kd2), calc_params.coef_kd2);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_ks1), calc_params.coef_ks1);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_ks2), calc_params.coef_ks2);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as1), calc_params.coef_as1);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as2), calc_params.coef_as2);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as1_fact), calc_params.coef_as1_fact);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as2_fact), calc_params.coef_as2_fact);
+    // printf("%34s: %d\n", VT_STRING_OF(calc_params.as1_d_armatura), calc_params.as1_d_armatura);
+    // printf("%34s: %d\n", VT_STRING_OF(calc_params.as1_n_armatura), calc_params.as1_n_armatura);
+    // printf("%34s: %d\n", VT_STRING_OF(calc_params.as2_d_armatura), calc_params.as2_d_armatura);
+    // printf("%34s: %d\n", VT_STRING_OF(calc_params.as2_n_armatura), calc_params.as2_n_armatura);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step1_90), calc_params.armatura_step1_90);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step2_90), calc_params.armatura_step2_90);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step1_180), calc_params.armatura_step1_180);
+    // printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step2_180), calc_params.armatura_step2_180);
 
     // init allocator
     alloctr = vt_mallocator_create();
@@ -128,7 +128,7 @@ void zhbk_app_run(void) {
         nk_glfw3_new_frame(&glfw_ctx);
 
         // describe GUI
-        if (nk_begin(nk_ctx, zhbk_label[ZHBK_LABEL_INPUT][language_id], nk_rect(5, 5, WINDOW_WIDTH/2, WINDOW_HEIGHT/2), WINDOW_FLAGS)) {
+        if (nk_begin(nk_ctx, zhbk_label[ZHBK_LABEL_INPUT][language_id], nk_rect(5, 5, WINDOW_WIDTH/2, WINDOW_HEIGHT-10), WINDOW_FLAGS)) {
             // language choice
             nk_layout_row_dynamic(nk_ctx, 25, 3);
             {   
@@ -164,6 +164,51 @@ void zhbk_app_run(void) {
                 nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_VREM_NAGRUZKA][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                 nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
                 nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KNM2][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                
+                // R2: row 5
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_TOLSINA_SLOY_1][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_TOLSINA_SLOY_1], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                
+                // R2: row 6
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_TOLSINA_SLOY_2][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_TOLSINA_SLOY_2], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                
+                // R2: row 7
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_TOLSINA_SLOY_3][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_TOLSINA_SLOY_3], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                
+                // R2: row 8
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_TOLSINA_SLOY_4][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_TOLSINA_SLOY_4], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+
+                // R2: row 9
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_PLOTNOST_SLOY_1][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_PLOTNOST_SLOY_1], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KGM3][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                
+                // R2: row 10
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_PLOTNOST_SLOY_2][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_PLOTNOST_SLOY_2], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KGM3][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                
+                // R2: row 11
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_PLOTNOST_SLOY_3][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_PLOTNOST_SLOY_3], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KGM3][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                
+                // R2: row 12
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_PLOTNOST_SLOY_4][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_PLOTNOST_SLOY_4], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KGM3][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+
+                // R3: row 13
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KLASS_BETONA][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_KLASS_BETONA], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_default);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_COD_BETONA][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
             }
 
             // calculate
@@ -171,10 +216,61 @@ void zhbk_app_run(void) {
             {   
                 nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                 if (nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_CALCULATE][language_id])) {
-                    VT_FOREACH(i, 0, ZHBK_LABEL_COUNT) {
-                        printf("%2zu: %s\n", i, zhbk_input_text[i]);
-                    }
-                    fprintf(stdout, "button pressed\n");
+                    struct ZHBKConfigParams params = zhbk_parse_params(zhbk_input_text);
+                    printf("%34s\n", "PARAMS");
+                    printf("%34s\n", "--- R1 ---");
+                    printf("%34s: %.2f\n", VT_STRING_OF(params.zdanie_L), params.zdanie_L);
+                    printf("%34s: %.2f\n", VT_STRING_OF(params.zdanie_B), params.zdanie_B);
+                    printf("%34s: %.2f\n", VT_STRING_OF(params.setka_L), params.setka_L);
+                    printf("%34s: %.2f\n", VT_STRING_OF(params.setka_B), params.setka_B);
+                    printf("%34s: %.2f\n", VT_STRING_OF(params.vrem_nagruzka), params.vrem_nagruzka);
+                    printf("%34s\n", "--- R2 ---");
+                    printf("%34s: %.2f\n", VT_STRING_OF(params.tolsina_sloy_1), params.tolsina_sloy_1);
+                    printf("%34s: %.2f\n", VT_STRING_OF(params.tolsina_sloy_2), params.tolsina_sloy_2);
+                    printf("%34s: %.2f\n", VT_STRING_OF(params.tolsina_sloy_3), params.tolsina_sloy_3);
+                    printf("%34s: %.2f\n", VT_STRING_OF(params.tolsina_sloy_4), params.tolsina_sloy_4);
+                    printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_1), params.plotnost_sloy_1);
+                    printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_2), params.plotnost_sloy_2);
+                    printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_3), params.plotnost_sloy_3);
+                    printf("%34s: %.2f\n", VT_STRING_OF(params.plotnost_sloy_4), params.plotnost_sloy_4);
+                    printf("%34s\n", "--- R3 ---");
+                    printf("%34s: %d\n\n", VT_STRING_OF(params.kd_class), params.kd_class);
+
+                    struct ZHBKCalcParams calc_params = zhbk_calc_params(params);
+                    printf("%34s\n", "CALCULATIONS");
+                    printf("%34s\n", "--- R1 ---");
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.main_beam_length), calc_params.main_beam_length);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.main_beam_height), calc_params.main_beam_height);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.main_beam_width), calc_params.main_beam_width);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.second_beam_length), calc_params.second_beam_length);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.second_beam_height), calc_params.second_beam_height);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.second_beam_width), calc_params.second_beam_width);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_thickness), calc_params.plate_thickness);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_width), calc_params.plate_width);
+                    printf("%34s\n", "--- R2 ---");
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.plate_effective_width), calc_params.plate_effective_width);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.temp_estimated_load), calc_params.temp_estimated_load);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.const_estimated_load), calc_params.const_estimated_load);
+                    printf("%34s\n", "--- R3 ---");
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.sum_estimated_load), calc_params.sum_estimated_load);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.bend_moment1), calc_params.bend_moment1);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.bend_moment2), calc_params.bend_moment2);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_kd1), calc_params.coef_kd1);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_kd2), calc_params.coef_kd2);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_ks1), calc_params.coef_ks1);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_ks2), calc_params.coef_ks2);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as1), calc_params.coef_as1);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as2), calc_params.coef_as2);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as1_fact), calc_params.coef_as1_fact);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.coef_as2_fact), calc_params.coef_as2_fact);
+                    printf("%34s: %d\n", VT_STRING_OF(calc_params.as1_d_armatura), calc_params.as1_d_armatura);
+                    printf("%34s: %d\n", VT_STRING_OF(calc_params.as1_n_armatura), calc_params.as1_n_armatura);
+                    printf("%34s: %d\n", VT_STRING_OF(calc_params.as2_d_armatura), calc_params.as2_d_armatura);
+                    printf("%34s: %d\n", VT_STRING_OF(calc_params.as2_n_armatura), calc_params.as2_n_armatura);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step1_90), calc_params.armatura_step1_90);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step2_90), calc_params.armatura_step2_90);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step1_180), calc_params.armatura_step1_180);
+                    printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step2_180), calc_params.armatura_step2_180);
                 }
             }
         }

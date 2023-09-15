@@ -147,7 +147,6 @@ void set_style(struct nk_context *ctx, enum theme theme) {
 }
 
 #include "zhbk.h"
-#include "language.h"
 
 #define WINDOW_WIDTH 1080
 #define WINDOW_HEIGHT 720
@@ -157,12 +156,21 @@ void set_style(struct nk_context *ctx, enum theme theme) {
 #define MAX_ELEMENT_BUFFER 128 * 1024
 
 static vt_mallocator_t *alloctr = NULL;
-static char zhbk_input_text[ZHBK_LABEL_COUNT][32] = {
-    [ZHBK_LABEL_ZDANIE_L]       = "22.8", 
-    [ZHBK_LABEL_ZDANIE_B]       = "60", 
-    [ZHBK_LABEL_SETKA_L]        = "5.7", 
-    [ZHBK_LABEL_SETKA_B]        = "6", 
-    [ZHBK_LABEL_VREM_NAGRUZKA]  = "4",
+static char zhbk_input_text[ZHBK_LABEL_COUNT][ZHBK_INPUT_LABEL_LENGTH] = {
+    [ZHBK_LABEL_ZDANIE_L]        = "22.8", 
+    [ZHBK_LABEL_ZDANIE_B]        = "60", 
+    [ZHBK_LABEL_SETKA_L]         = "5.7", 
+    [ZHBK_LABEL_SETKA_B]         = "6", 
+    [ZHBK_LABEL_VREM_NAGRUZKA]   = "4",
+    [ZHBK_LABEL_TOLSINA_SLOY_1]  = "0.01",
+    [ZHBK_LABEL_TOLSINA_SLOY_2]  = "0.03",
+    [ZHBK_LABEL_TOLSINA_SLOY_3]  = "0.025",
+    [ZHBK_LABEL_TOLSINA_SLOY_4]  = "0.1",
+    [ZHBK_LABEL_PLOTNOST_SLOY_1] = "1800",
+    [ZHBK_LABEL_PLOTNOST_SLOY_2] = "1600",
+    [ZHBK_LABEL_PLOTNOST_SLOY_3] = "150",
+    [ZHBK_LABEL_PLOTNOST_SLOY_4] = "2500",
+    [ZHBK_LABEL_KLASS_BETONA]    = "C12/15",
 };
 
 void zhbk_app_run(void);

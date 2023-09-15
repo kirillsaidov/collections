@@ -69,6 +69,27 @@ struct ZHBKConfigParams zhbk_parse_config_params(const char *config_file) {
     return params;
 }
 
+struct ZHBKConfigParams zhbk_parse_params(const char input[ZHBK_LABEL_COUNT][ZHBK_INPUT_LABEL_LENGTH]) {
+    struct ZHBKConfigParams params = {
+        .zdanie_L = vt_conv_str_to_f(input[ZHBK_LABEL_ZDANIE_L]), 
+        .zdanie_B = vt_conv_str_to_f(input[ZHBK_LABEL_ZDANIE_B]), 
+        .setka_L = vt_conv_str_to_f(input[ZHBK_LABEL_SETKA_L]), 
+        .setka_B = vt_conv_str_to_f(input[ZHBK_LABEL_SETKA_B]), 
+        .vrem_nagruzka = vt_conv_str_to_f(input[ZHBK_LABEL_VREM_NAGRUZKA]),
+        .tolsina_sloy_1 = vt_conv_str_to_f(input[ZHBK_LABEL_TOLSINA_SLOY_1]),
+        .tolsina_sloy_2 = vt_conv_str_to_f(input[ZHBK_LABEL_TOLSINA_SLOY_2]),
+        .tolsina_sloy_3 = vt_conv_str_to_f(input[ZHBK_LABEL_TOLSINA_SLOY_3]),
+        .tolsina_sloy_4 = vt_conv_str_to_f(input[ZHBK_LABEL_TOLSINA_SLOY_4]),
+        .plotnost_sloy_1 = vt_conv_str_to_f(input[ZHBK_LABEL_PLOTNOST_SLOY_1]),
+        .plotnost_sloy_2 = vt_conv_str_to_f(input[ZHBK_LABEL_PLOTNOST_SLOY_2]),
+        .plotnost_sloy_3 = vt_conv_str_to_f(input[ZHBK_LABEL_PLOTNOST_SLOY_3]),
+        .plotnost_sloy_4 = vt_conv_str_to_f(input[ZHBK_LABEL_PLOTNOST_SLOY_4]),
+        .kd_class = zhbk_conv_str_to_kd_class_hardness(input[ZHBK_LABEL_KLASS_BETONA]),
+    };
+
+    return params;
+}
+
 struct ZHBKCalcParams zhbk_calc_params(const struct ZHBKConfigParams params) {
     struct ZHBKCalcParams calc_params = {}; 
 
@@ -216,5 +237,19 @@ float zhbk_get_asx_fact_value(const float coef_as, int32_t *d_armatura, int32_t 
     }
 
     return coef_as_fact;
+}
+
+enum ZHBKKdClassHardness zhbk_conv_str_to_kd_class_hardness(const char *const text) {
+    if(vt_str_equals(text, "C12/15")) return ZHBK_KD_CLASS_C1215;
+    if(vt_str_equals(text, "C16/20")) return ZHBK_KD_CLASS_C1620;
+    if(vt_str_equals(text, "C20/25")) return ZHBK_KD_CLASS_C2025;
+    if(vt_str_equals(text, "C25/30")) return ZHBK_KD_CLASS_C2530;
+    if(vt_str_equals(text, "C30/37")) return ZHBK_KD_CLASS_C3037;
+    if(vt_str_equals(text, "C35/45")) return ZHBK_KD_CLASS_C3545;
+    if(vt_str_equals(text, "C40/50")) return ZHBK_KD_CLASS_C4050;
+    if(vt_str_equals(text, "C45/55")) return ZHBK_KD_CLASS_C4555;
+    if(vt_str_equals(text, "C50/60")) return ZHBK_KD_CLASS_C5060;
+
+    return -1;
 }
 
