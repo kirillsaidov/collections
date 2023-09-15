@@ -56,12 +56,22 @@ int32_t main(void) {
     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step1_180), calc_params.armatura_step1_180);
     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step2_180), calc_params.armatura_step2_180);
 
-    zhbk_gui_run();
+    // init allocator
+    alloctr = vt_mallocator_create();
+    
+    // run app
+    zhbk_app_run();
+
+    // print allocator stats
+    vt_mallocator_print_stats(alloctr->stats);
+
+    // free memory
+    vt_mallocator_destroy(alloctr);
 
     return 0;
 }
 
-void zhbk_gui_run(void) {
+void zhbk_app_run(void) {
     // platform
     static GLFWwindow *window_handle = NULL;
     int32_t window_width = 0, window_height = 0;
@@ -95,51 +105,77 @@ void zhbk_gui_run(void) {
     {
         // initialize fonts: default font
         struct nk_font_atlas *atlas = NULL;
+        struct nk_font_config font_cfg = nk_font_config(16);
         nk_glfw3_font_stash_begin(&glfw_ctx, &atlas);
-        // struct nk_font *droid = nk_font_atlas_add_from_file(atlas, "../../../extra_font/DroidSans.ttf", 14, 0);
+        font_cfg.range = nk_font_cyrillic_glyph_ranges();
+        struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/collections/zhbk1/assets/roboto.ttf", 16, &font_cfg);
         nk_glfw3_font_stash_end(&glfw_ctx);
+        nk_style_set_font(nk_ctx, &roboto->handle);
     }
 
     // set style
     set_style(nk_ctx, THEME_RED);
     // set_style(nk_ctx, THEME_DARK);
 
+    // init language
+    enum ZHBKLanguage language_id = ZHBK_LANGUAGE_RUSSIAN;
+
     // loop
-    char text_buffer[1024] = "hello, world!";
+    char text_buffer[1024] = "0.0";
     while(!glfwWindowShouldClose(window_handle)) {
         // process events
         glfwPollEvents();
         nk_glfw3_new_frame(&glfw_ctx);
 
         // describe GUI
-        if (nk_begin(nk_ctx, "INPUT", nk_rect(5, 5, WINDOW_WIDTH/2, WINDOW_HEIGHT/2), WINDOW_FLAGS)) {
+        if (nk_begin(nk_ctx, zhbk_label[ZHBK_LABEL_INPUT][language_id], nk_rect(5, 5, WINDOW_WIDTH/2, WINDOW_HEIGHT/2), WINDOW_FLAGS)) {
+            // language choice
+            nk_layout_row_dynamic(nk_ctx, 25, 3);
+            {   
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_LANGUAGE][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                if (nk_option_label(nk_ctx, zhbk_label[ZHBK_LABEL_LANGUAGE_RU][language_id], language_id == ZHBK_LANGUAGE_RUSSIAN)) language_id = ZHBK_LANGUAGE_RUSSIAN;
+                if (nk_option_label(nk_ctx, zhbk_label[ZHBK_LABEL_LANGUAGE_KZ][language_id], language_id == ZHBK_LANGUAGE_KAZAKH)) language_id = ZHBK_LANGUAGE_KAZAKH;
+            }
+            
             // text: variable | input | text: measure unit
-            nk_layout_row_static(nk_ctx, 25, 120, 3);
+            nk_layout_row_static(nk_ctx, 28, 120, 3);
             {
                 // R1: row 1
-                nk_label(nk_ctx, "Zdanie_B", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, text_buffer, sizeof(text_buffer), nk_filter_default);
-                nk_label(nk_ctx, "meters", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_ZDANIE_L][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_ZDANIE_L], sizeof(zhbk_input_text[ZHBK_LABEL_ZDANIE_L]), nk_filter_float);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
 
                 // R1: row 2
-                nk_label(nk_ctx, "Zdanie_L", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, text_buffer, sizeof(text_buffer), nk_filter_default);
-                nk_label(nk_ctx, "meters", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_ZDANIE_B][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_ZDANIE_B], sizeof(zhbk_input_text[ZHBK_LABEL_ZDANIE_B]), nk_filter_float);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
 
                 // R1: row 3
-                nk_label(nk_ctx, "Setka_B", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, text_buffer, sizeof(text_buffer), nk_filter_default);
-                nk_label(nk_ctx, "meters", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_SETKA_L][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_SETKA_L], sizeof(zhbk_input_text[ZHBK_LABEL_SETKA_L]), nk_filter_float);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                 
                 // R1: row 4
-                nk_label(nk_ctx, "Setka_L", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, text_buffer, sizeof(text_buffer), nk_filter_default);
-                nk_label(nk_ctx, "meters", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_SETKA_B][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_SETKA_B], sizeof(zhbk_input_text[ZHBK_LABEL_ZDANIE_B]), nk_filter_float);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
 
                 // R1: row 4
-                nk_label(nk_ctx, "Vrem_nagruzka", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, text_buffer, sizeof(text_buffer), nk_filter_default);
-                nk_label(nk_ctx, "KN/m^2", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_VREM_NAGRUZKA][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KNM2][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+            }
+
+            // calculate
+            nk_layout_row_static(nk_ctx, 30, window_width/2 - 22, 1);
+            {   
+                nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                if (nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_CALCULATE][language_id])) {
+                    VT_FOREACH(i, 0, ZHBK_LABEL_COUNT) {
+                        printf("%2zu: %s\n", i, zhbk_input_text[i]);
+                    }
+                    fprintf(stdout, "button pressed\n");
+                }
             }
         }
         nk_end(nk_ctx);

@@ -1,5 +1,5 @@
-#ifndef TABLEDATA_H
-#define TABLEDATA_H
+#ifndef ZHBK_TABLEDATA_H
+#define ZHBK_TABLEDATA_H
 
 enum ZHBKKdClassHardness {
     ZHBK_KD_CLASS_C1215,
@@ -14,7 +14,7 @@ enum ZHBKKdClassHardness {
     ZHBK_KD_CLASS_COUNT
 };
 
-static float zhbk_kd_class_table[25][ZHBK_KD_CLASS_COUNT] = {
+static const float zhbk_kd_class_table[25][ZHBK_KD_CLASS_COUNT] = {
     14.34, 12.41, 11.10, 9.93, 9.07, 8.39, 7.85, 7.40, 7.02,
     7.90, 6.84, 6.12, 5.47, 5.00, 4.63, 4.33, 4.08, 3.87,
     5.87, 5.08, 4.54, 4.06, 3.71, 3.44, 3.21, 3.03, 2.87,
@@ -42,7 +42,7 @@ static float zhbk_kd_class_table[25][ZHBK_KD_CLASS_COUNT] = {
     1.99, 1.72, 1.54, 1.38, 1.26, 1.17, 1.09, 1.03, 0.98
 };
 
-static float zhbk_ks_class_table[25] = {
+static const float zhbk_ks_class_table[25] = {
     2.32, 2.34, 2.36, 2.38, 2.40, 
     2.42, 2.44, 2.46, 2.48, 2.50,
     2.54, 2.58, 2.62, 2.66, 2.70,
@@ -50,7 +50,7 @@ static float zhbk_ks_class_table[25] = {
     2.94, 2.98, 3.02, 3.06, 3.09 
 };
 
-static float zhbk_armatura_table[17][11] = {
+static const float zhbk_armatura_table[17][11] = {
     3,   0.071,  0.141,  0.212, 0.283, 0.353, 0.424, 0.495, 0.565, 0.636, 0.707,
     4,   0.126,  0.251,  0.377, 0.503, 0.628, 0.754, 0.88, 1.005, 1.131, 1.257,
     5,   0.196,  0.393,  0.589, 0.785, 0.982, 1.178, 1.374, 1.571, 1.767, 1.963,
@@ -70,4 +70,4 @@ static float zhbk_armatura_table[17][11] = {
     40, 12.566, 25.133, 37.699, 50.265, 62.832, 75.398, 87.965, 100.531, 113.097, 125.664
 };
 
-#endif // TABLEDATA_H
+#endif // ZHBK_TABLEDATA_H

@@ -1,5 +1,5 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef ZHBK_MAIN_H
+#define ZHBK_MAIN_H
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -19,7 +19,7 @@
 
 // style
 enum theme {THEME_BLACK, THEME_WHITE, THEME_RED, THEME_BLUE, THEME_DARK};
-static void set_style(struct nk_context *ctx, enum theme theme) {
+void set_style(struct nk_context *ctx, enum theme theme) {
     struct nk_color table[NK_COLOR_COUNT];
     if (theme == THEME_WHITE) {
         table[NK_COLOR_TEXT] = nk_rgba(70, 70, 70, 255);
@@ -147,14 +147,24 @@ static void set_style(struct nk_context *ctx, enum theme theme) {
 }
 
 #include "zhbk.h"
+#include "language.h"
 
 #define WINDOW_WIDTH 1080
 #define WINDOW_HEIGHT 720
-#define WINDOW_FLAGS (NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE)
+#define WINDOW_FLAGS (NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE)
 
 #define MAX_VERTEX_BUFFER 512 * 1024
 #define MAX_ELEMENT_BUFFER 128 * 1024
 
-void zhbk_gui_run(void);
+static vt_mallocator_t *alloctr = NULL;
+static char zhbk_input_text[ZHBK_LABEL_COUNT][32] = {
+    [ZHBK_LABEL_ZDANIE_L]       = "22.8", 
+    [ZHBK_LABEL_ZDANIE_B]       = "60", 
+    [ZHBK_LABEL_SETKA_L]        = "5.7", 
+    [ZHBK_LABEL_SETKA_B]        = "6", 
+    [ZHBK_LABEL_VREM_NAGRUZKA]  = "4",
+};
 
-#endif // MAIN_H
+void zhbk_app_run(void);
+
+#endif // ZHBK_MAIN_H
