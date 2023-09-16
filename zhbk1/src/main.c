@@ -209,6 +209,8 @@ void zhbk_app_run(void) {
                 nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KLASS_BETONA][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                 nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_KLASS_BETONA], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_default);
                 nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_COD_BETONA][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+            
+                // add combobox (check out nuklear overview)
             }
 
             // calculate
