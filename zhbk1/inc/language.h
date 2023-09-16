@@ -10,6 +10,7 @@ enum ZHBKLanguage {
 enum ZHBKLabel {
     // labels
     ZHBK_LABEL_INPUT,
+    ZHBK_LABEL_OUTPUT,
     ZHBK_LABEL_LANGUAGE,
     ZHBK_LABEL_LANGUAGE_RU,
     ZHBK_LABEL_LANGUAGE_KZ,
@@ -43,6 +44,7 @@ enum ZHBKLabel {
 static const char zhbk_label[ZHBK_LABEL_COUNT][ZHBK_LANGAUGE_COUNT][512] = {
     // label
     [ZHBK_LABEL_INPUT]            = { "Введите данные",   "hello" }, 
+    [ZHBK_LABEL_OUTPUT]           = { "Рассчёт",          "hello" }, 
     [ZHBK_LABEL_LANGUAGE]         = { "Язык",             "hello" }, 
     [ZHBK_LABEL_LANGUAGE_RU]      = { "Русский",          "hello" }, 
     [ZHBK_LABEL_LANGUAGE_KZ]      = { "Казахский",        "hello" }, 

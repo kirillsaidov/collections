@@ -34,7 +34,7 @@ void zhbk_app_run(void) {
     #ifdef __APPLE__
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     #endif
-    window_handle = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "ZHBK CALC", NULL, NULL);
+    window_handle = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, NULL, NULL);
     glfwMakeContextCurrent(window_handle);
     glfwGetWindowSize(window_handle, &window_width, &window_height);
 
@@ -63,6 +63,7 @@ void zhbk_app_run(void) {
     // zhbk_app_set_gui_style(nk_ctx, ZHBK_THEME_DARK);
 
     // init variables
+    bool calculate_button_pressed = false;
     enum ZHBKLanguage language_id = ZHBK_LANGUAGE_RUSSIAN;
     enum ZHBKKdClassHardness kd_class = ZHBK_KD_CLASS_C1215;
 
@@ -72,8 +73,8 @@ void zhbk_app_run(void) {
         glfwPollEvents();
         nk_glfw3_new_frame(&glfw_ctx);
 
-        // describe GUI
-        if (nk_begin(nk_ctx, zhbk_label[ZHBK_LABEL_INPUT][language_id], nk_rect(5, 5, WINDOW_WIDTH/2, WINDOW_HEIGHT-10), WINDOW_FLAGS)) {
+        // describe GUI: input window
+        if (nk_begin_titled(nk_ctx, WINDOW_TITLE "1", zhbk_label[ZHBK_LABEL_INPUT][language_id], nk_rect(5, 5, WINDOW_WIDTH/2 - 5, WINDOW_HEIGHT*5/6), WINDOW_FLAGS)) {
             // language choice
             nk_layout_row_dynamic(nk_ctx, 25, 3);
             {   
@@ -85,72 +86,19 @@ void zhbk_app_run(void) {
             // text: variable | input | text: measure unit
             nk_layout_row_static(nk_ctx, 28, 120, 3);
             {
-                // R1: row 1
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_ZDANIE_L][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_ZDANIE_L], sizeof(zhbk_input_text[ZHBK_LABEL_ZDANIE_L]), nk_filter_float);
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                // generate input rows
+                VT_FOREACH(i, ZHBK_LABEL_ZDANIE_L, ZHBK_LABEL_KLASS_BETONA) {
+                    nk_label(nk_ctx, zhbk_label[i][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                    nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[i], sizeof(zhbk_input_text[i]), nk_filter_float);
 
-                // R1: row 2
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_ZDANIE_B][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_ZDANIE_B], sizeof(zhbk_input_text[ZHBK_LABEL_ZDANIE_B]), nk_filter_float);
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                    // measure unit
+                    const enum ZHBKLabel mu = (i == ZHBK_LABEL_VREM_NAGRUZKA) 
+                        ? ZHBK_LABEL_KNM2 
+                        : (i > ZHBK_LABEL_TOLSINA_SLOY_4 ? ZHBK_LABEL_KGM3 : ZHBK_LABEL_METERS);
+                    nk_label(nk_ctx, zhbk_label[mu][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                }
 
-                // R1: row 3
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_SETKA_L][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_SETKA_L], sizeof(zhbk_input_text[ZHBK_LABEL_SETKA_L]), nk_filter_float);
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                
-                // R1: row 4
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_SETKA_B][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_SETKA_B], sizeof(zhbk_input_text[ZHBK_LABEL_ZDANIE_B]), nk_filter_float);
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-
-                // R1: row 4
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_VREM_NAGRUZKA][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KNM2][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                
-                // R2: row 5
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_TOLSINA_SLOY_1][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_TOLSINA_SLOY_1], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                
-                // R2: row 6
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_TOLSINA_SLOY_2][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_TOLSINA_SLOY_2], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                
-                // R2: row 7
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_TOLSINA_SLOY_3][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_TOLSINA_SLOY_3], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                
-                // R2: row 8
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_TOLSINA_SLOY_4][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_TOLSINA_SLOY_4], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_METERS][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-
-                // R2: row 9
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_PLOTNOST_SLOY_1][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_PLOTNOST_SLOY_1], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KGM3][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                
-                // R2: row 10
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_PLOTNOST_SLOY_2][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_PLOTNOST_SLOY_2], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KGM3][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                
-                // R2: row 11
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_PLOTNOST_SLOY_3][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_PLOTNOST_SLOY_3], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KGM3][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                
-                // R2: row 12
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_PLOTNOST_SLOY_4][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_input_text[ZHBK_LABEL_PLOTNOST_SLOY_4], sizeof(zhbk_input_text[ZHBK_LABEL_VREM_NAGRUZKA]), nk_filter_float);
-                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KGM3][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-            
-                // R3: row 13
+                // select item from box
                 nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_KLASS_BETONA][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                 kd_class = nk_combo(nk_ctx, zhbk_kd_class_name, ZHBK_KD_CLASS_COUNT, kd_class, 28, nk_vec2(120, 160));
                 nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_COD_BETONA][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
@@ -160,7 +108,7 @@ void zhbk_app_run(void) {
             nk_layout_row_static(nk_ctx, 30, window_width/2 - 22, 1);
             {   
                 nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                if (nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_CALCULATE][language_id])) {
+                if (nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_CALCULATE][language_id])) {                    
                     // parse input
                     struct ZHBKInputParams params = zhbk_parse_params(zhbk_input_text);
                     params.kd_class = kd_class;
@@ -219,10 +167,21 @@ void zhbk_app_run(void) {
                     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step2_90), calc_params.armatura_step2_90);
                     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step1_180), calc_params.armatura_step1_180);
                     printf("%34s: %.2f\n", VT_STRING_OF(calc_params.armatura_step2_180), calc_params.armatura_step2_180);
+
+                    // show calculate window
+                    calculate_button_pressed = true;
                 }
             }
+
+            nk_end(nk_ctx);
         }
-        nk_end(nk_ctx);
+
+        // describe GUI: output window (calculations)
+        if(calculate_button_pressed && nk_begin_titled(nk_ctx, WINDOW_TITLE "2", zhbk_label[ZHBK_LABEL_OUTPUT][language_id], nk_rect(WINDOW_WIDTH/2 + 5, 5, WINDOW_WIDTH/2 - 10, WINDOW_HEIGHT*5/6), WINDOW_FLAGS)) {
+            //
+
+            nk_end(nk_ctx);
+        }
 
         // render GUI
         glfwGetWindowSize(window_handle, &window_width, &window_height);
