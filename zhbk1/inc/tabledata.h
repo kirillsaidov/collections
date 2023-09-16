@@ -14,6 +14,12 @@ enum ZHBKKdClassHardness {
     ZHBK_KD_CLASS_COUNT
 };
 
+static const char *zhbk_kd_class_name[] = {
+    "C12/15", "C16/20", "C20/25", 
+    "C25/30", "C30/37", "C35/45", 
+    "C40/50", "C45/55", "C50/60", 
+};
+
 static const float zhbk_kd_class_table[25][ZHBK_KD_CLASS_COUNT] = {
     14.34, 12.41, 11.10, 9.93, 9.07, 8.39, 7.85, 7.40, 7.02,
     7.90, 6.84, 6.12, 5.47, 5.00, 4.63, 4.33, 4.08, 3.87,
