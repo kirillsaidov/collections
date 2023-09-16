@@ -10,7 +10,7 @@ project(
 
 # setting default build type
 set(CMAKE_C_STANDARD 11)
-set(default_buid_type "Debug")
+set(CMAKE_BUILD_TYPE "Debug")
 # set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)   # for libraries
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin) # for binaries
 
