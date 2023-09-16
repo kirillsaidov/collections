@@ -54,22 +54,55 @@ enum ZHBKTheme {
     ZHBK_THEME_COUNT
 };
 
-// input
-static char zhbk_input_text[ZHBK_LABEL_COUNT][ZHBK_INPUT_LABEL_LENGTH] = {
-    [ZHBK_LABEL_ZDANIE_L]        = "22.8", 
-    [ZHBK_LABEL_ZDANIE_B]        = "60", 
-    [ZHBK_LABEL_SETKA_L]         = "5.7", 
-    [ZHBK_LABEL_SETKA_B]         = "6", 
-    [ZHBK_LABEL_VREM_NAGRUZKA]   = "4",
-    [ZHBK_LABEL_TOLSINA_SLOY_1]  = "0.01",
-    [ZHBK_LABEL_TOLSINA_SLOY_2]  = "0.03",
-    [ZHBK_LABEL_TOLSINA_SLOY_3]  = "0.025",
-    [ZHBK_LABEL_TOLSINA_SLOY_4]  = "0.1",
-    [ZHBK_LABEL_PLOTNOST_SLOY_1] = "1800",
-    [ZHBK_LABEL_PLOTNOST_SLOY_2] = "1600",
-    [ZHBK_LABEL_PLOTNOST_SLOY_3] = "150",
-    [ZHBK_LABEL_PLOTNOST_SLOY_4] = "2500",
-    [ZHBK_LABEL_KLASS_BETONA]    = "C12/15",
+// zhbk data
+static char zhbk_data_text[ZHBK_LABEL_COUNT][ZHBK_INPUT_LABEL_LENGTH] = {
+    // input variables
+    [ZHBK_LABEL_ZDANIE_L]               = "22.8", 
+    [ZHBK_LABEL_ZDANIE_B]               = "60", 
+    [ZHBK_LABEL_SETKA_L]                = "5.7", 
+    [ZHBK_LABEL_SETKA_B]                = "6", 
+    [ZHBK_LABEL_VREM_NAGRUZKA]          = "4",
+    [ZHBK_LABEL_TOLSINA_SLOY_1]         = "0.01",
+    [ZHBK_LABEL_TOLSINA_SLOY_2]         = "0.03",
+    [ZHBK_LABEL_TOLSINA_SLOY_3]         = "0.025",
+    [ZHBK_LABEL_TOLSINA_SLOY_4]         = "0.1",
+    [ZHBK_LABEL_PLOTNOST_SLOY_1]        = "1800",
+    [ZHBK_LABEL_PLOTNOST_SLOY_2]        = "1600",
+    [ZHBK_LABEL_PLOTNOST_SLOY_3]        = "150",
+    [ZHBK_LABEL_PLOTNOST_SLOY_4]        = "2500",
+    [ZHBK_LABEL_KLASS_BETONA]           = "C12/15",
+
+    // output variables
+    [ZHBK_LABEL_MAIN_BEAM_LENGTH]        = "",
+    [ZHBK_LABEL_MAIN_BEAM_HEIGHT]        = "",
+    [ZHBK_LABEL_MAIN_BEAM_WIDTH]         = "",
+    [ZHBK_LABEL_SECOND_BEAM_LENGTH]      = "",
+    [ZHBK_LABEL_SECOND_BEAM_HEIGHT]      = "",
+    [ZHBK_LABEL_SECOND_BEAM_WIDTH]       = "",
+    [ZHBK_LABEL_PLATE_THICKNESS]         = "",
+    [ZHBK_LABEL_PLATE_WIDTH]             = "",
+    [ZHBK_LABEL_PLATE_EFFECTIVE_WIDTH]   = "",
+    [ZHBK_LABEL_TEMP_ESTIMATED_LOAD]     = "",
+    [ZHBK_LABEL_CONST_ESTIMATED_LOAD]    = "",
+    [ZHBK_LABEL_SUM_ESTIMATED_LOAD]      = "",
+    [ZHBK_LABEL_BEND_MOMENT_1]           = "",
+    [ZHBK_LABEL_BEND_MOMENT_2]           = "",
+    [ZHBK_LABEL_COEF_KD_1]               = "",
+    [ZHBK_LABEL_COEF_KD_2]               = "",
+    [ZHBK_LABEL_COEF_KS_1]               = "",
+    [ZHBK_LABEL_COEF_KS_2]               = "",
+    [ZHBK_LABEL_COEF_AS_1]               = "",
+    [ZHBK_LABEL_COEF_AS_2]               = "",
+    [ZHBK_LABEL_COEF_AS_1_FACT]          = "",
+    [ZHBK_LABEL_COEF_AS_2_FACT]          = "",
+    [ZHBK_LABEL_ARMATURA_STEP1_90]       = "",
+    [ZHBK_LABEL_ARMATURA_STEP2_90]       = "",
+    [ZHBK_LABEL_ARMATURA_STEP1_180]      = "",
+    [ZHBK_LABEL_ARMATURA_STEP2_180]      = "",
+    [ZHBK_LABEL_ARMATURA_AS1_D] = "",
+    [ZHBK_LABEL_ARMATURA_AS1_N] = "",
+    [ZHBK_LABEL_ARMATURA_AS2_D] = "",
+    [ZHBK_LABEL_ARMATURA_AS2_N] = "",
 };
 
 // Input parameters
@@ -138,16 +171,14 @@ struct ZHBKCalcParams {
         as2_n_armatura;
 };
 
-// allocator
-static vt_mallocator_t *alloctr = NULL;
-
 // setup
 extern void zhbk_app_run(void);
 extern void zhbk_app_set_gui_style(struct nk_context *ctx, enum ZHBKTheme ZHBKTheme);
 
 // calculations
-extern struct ZHBKInputParams zhbk_parse_params(const char zhbk_input_text[ZHBK_LABEL_COUNT][ZHBK_INPUT_LABEL_LENGTH]);
-extern struct ZHBKCalcParams zhbk_calc_params(const struct ZHBKInputParams params);
+extern struct ZHBKInputParams zhbk_params_parse(const char input[ZHBK_LABEL_COUNT][ZHBK_INPUT_LABEL_LENGTH]);
+extern struct ZHBKCalcParams zhbk_params_calc(const struct ZHBKInputParams params);
+extern void zhbk_params_output_results(const struct ZHBKCalcParams params, const char output[ZHBK_LABEL_COUNT][ZHBK_INPUT_LABEL_LENGTH]);
 
 // auxiliary
 extern float zhbk_calc_wall_thickness_from_load(const float thickness);
