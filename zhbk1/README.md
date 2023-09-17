@@ -1,8 +1,8 @@
 # ZHBK1 app
 Build:
 ```
-git pull                # sync changes
 cd collections/zhbk1    # go to directory
+git pull                # sync changes
 
 # build
 ./build.bat             # on windows
