@@ -44,7 +44,8 @@ void zhbk_app_run(void) {
         struct nk_font_config font_cfg = nk_font_config(16);
         nk_glfw3_font_stash_begin(&glfw_ctx, &atlas);
         font_cfg.range = nk_font_cyrillic_glyph_ranges();
-        struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/collections/zhbk1/assets/roboto.ttf", 16, &font_cfg);
+        // struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/collections/zhbk1/assets/roboto.ttf", 16, &font_cfg);
+        struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "./assets/roboto.ttf", 16, &font_cfg);
         nk_glfw3_font_stash_end(&glfw_ctx);
         nk_style_set_font(nk_ctx, &roboto->handle);
     }
