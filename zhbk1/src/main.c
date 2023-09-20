@@ -76,7 +76,7 @@ void zhbk_app_run(void) {
             }
             
             // text: variable | input | text: measure unit
-            nk_layout_row_static(nk_ctx, 28, 120, 3);
+            nk_layout_row_static(nk_ctx, 28, 320, 3);
             {
                 // generate input rows
                 VT_FOREACH(i, ZHBK_LABEL_ZDANIE_L, ZHBK_LABEL_KLASS_BETONA) {
