@@ -1,5 +1,5 @@
 @echo off
 
-.\build.bat & .\run.bat
+.\build.bat & .\bin\zhbk1.exe
 
 
