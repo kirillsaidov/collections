@@ -40,19 +40,19 @@ void zhbk_app_run(void) {
     nk_ctx = nk_glfw3_init(&glfw_ctx, window_handle, NK_GLFW3_INSTALL_CALLBACKS);
     {
         // initialize fonts: default font
+        const float font_size = 18;
         struct nk_font_atlas *atlas = NULL;
-        struct nk_font_config font_cfg = nk_font_config(16);
+        struct nk_font_config font_cfg = nk_font_config(font_size);
         nk_glfw3_font_stash_begin(&glfw_ctx, &atlas);
         font_cfg.range = nk_font_cyrillic_glyph_ranges();
-        // struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "/Users/krillos/MyFiles/dev/repos/git.kirillsaidov/collections/zhbk1/assets/roboto.ttf", 16, &font_cfg);
-        struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "./assets/roboto.ttf", 16, &font_cfg);
+        struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "./assets/ptserif.ttf", font_size, &font_cfg);
         nk_glfw3_font_stash_end(&glfw_ctx);
         nk_style_set_font(nk_ctx, &roboto->handle);
     }
 
-    // set style
-    zhbk_app_set_gui_style(nk_ctx, ZHBK_THEME_RED);
-    // zhbk_app_set_gui_style(nk_ctx, ZHBK_THEME_DARK);
+    // set theme style
+    enum ZHBKTheme theme_id = ZHBK_THEME_RED;
+    zhbk_app_set_gui_style(nk_ctx, theme_id);
 
     // init variables
     bool calculate_button_pressed = false;
@@ -60,15 +60,31 @@ void zhbk_app_run(void) {
     enum ZHBKKdClassHardness kd_class = ZHBK_KD_CLASS_C1215;
 
     // loop
-    while(!glfwWindowShouldClose(window_handle)) {
+    while (!glfwWindowShouldClose(window_handle)) {
         // process events
         glfwPollEvents();
+        if (glfwGetKey(window_handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+            break;
+        }
         nk_glfw3_new_frame(&glfw_ctx);
 
         // describe GUI: input window
-        if (nk_begin_titled(nk_ctx, WINDOW_TITLE "1", zhbk_label[ZHBK_LABEL_INPUT][language_id], nk_rect(5, 5, WINDOW_WIDTH/2 - 5, WINDOW_HEIGHT*5/6), WINDOW_FLAGS)) {
+        if (nk_begin_titled(nk_ctx, WINDOW_TITLE "1", zhbk_label[ZHBK_LABEL_INPUT][language_id], nk_rect(5, 5, WINDOW_WIDTH/2.1 - 5, WINDOW_HEIGHT - 10), WINDOW_FLAGS)) {
+            // theme choice
+            nk_layout_row_dynamic(nk_ctx, 28, 6);
+            {   
+                const enum ZHBKTheme old_theme_id = theme_id;
+                nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_THEME][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                if (nk_option_label(nk_ctx, zhbk_label[ZHBK_LABEL_THEME_BLACK][language_id], theme_id == ZHBK_THEME_BLACK)) theme_id = ZHBK_THEME_BLACK;
+                if (nk_option_label(nk_ctx, zhbk_label[ZHBK_LABEL_THEME_BLUE][language_id], theme_id == ZHBK_THEME_BLUE)) theme_id = ZHBK_THEME_BLUE;
+                if (nk_option_label(nk_ctx, zhbk_label[ZHBK_LABEL_THEME_DARK][language_id], theme_id == ZHBK_THEME_DARK)) theme_id = ZHBK_THEME_DARK;
+                if (nk_option_label(nk_ctx, zhbk_label[ZHBK_LABEL_THEME_RED][language_id], theme_id == ZHBK_THEME_RED)) theme_id = ZHBK_THEME_RED;
+                if (nk_option_label(nk_ctx, zhbk_label[ZHBK_LABEL_THEME_WHITE][language_id], theme_id == ZHBK_THEME_WHITE)) theme_id = ZHBK_THEME_WHITE;
+                if (old_theme_id != theme_id) zhbk_app_set_gui_style(nk_ctx, theme_id);
+            }
+            
             // language choice
-            nk_layout_row_dynamic(nk_ctx, 25, 3);
+            nk_layout_row_dynamic(nk_ctx, 28, 3);
             {   
                 nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_LANGUAGE][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                 if (nk_option_label(nk_ctx, zhbk_label[ZHBK_LABEL_LANGUAGE_RU][language_id], language_id == ZHBK_LANGUAGE_RUSSIAN)) language_id = ZHBK_LANGUAGE_RUSSIAN;
@@ -76,17 +92,29 @@ void zhbk_app_run(void) {
             }
             
             // text: variable | input | text: measure unit
-            nk_layout_row_static(nk_ctx, 28, 320, 3);
             {
+                // create layout template
+                nk_layout_row_template_begin(nk_ctx, 28);
+                nk_layout_row_template_push_variable(nk_ctx, 320);
+                nk_layout_row_template_push_static(nk_ctx, 81);
+                nk_layout_row_template_push_static(nk_ctx, 100);
+                nk_layout_row_template_end(nk_ctx);
+
                 // generate input rows
                 VT_FOREACH(i, ZHBK_LABEL_ZDANIE_L, ZHBK_LABEL_KLASS_BETONA) {
                     nk_label(nk_ctx, zhbk_label[i][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                     nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, zhbk_data_text[i], sizeof(zhbk_data_text[i]), nk_filter_float);
 
                     // measure unit
-                    const enum ZHBKLabel mu = (i == ZHBK_LABEL_VREM_NAGRUZKA) 
-                        ? ZHBK_LABEL_KNM2 
-                        : (i > ZHBK_LABEL_TOLSINA_SLOY_4 ? ZHBK_LABEL_KGM3 : ZHBK_LABEL_METERS);
+                    enum ZHBKLabel mu = ZHBK_LABEL_METERS;
+                    if (i == ZHBK_LABEL_VREM_NAGRUZKA) {
+                        mu = ZHBK_LABEL_KNM2;
+                    } else if (i >= ZHBK_LABEL_TOLSINA_SLOY_1 && i <= ZHBK_LABEL_TOLSINA_SLOY_4) {
+                        mu = ZHBK_LABEL_MILLIMETERS;
+                    } else if (i >= ZHBK_LABEL_PLOTNOST_SLOY_1 && i <= ZHBK_LABEL_PLOTNOST_SLOY_4) {
+                        mu = ZHBK_LABEL_KGM3;
+                    }
+
                     nk_label(nk_ctx, zhbk_label[mu][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                 }
 
@@ -97,8 +125,8 @@ void zhbk_app_run(void) {
             }
 
             // calculate
-            nk_layout_row_static(nk_ctx, 30, window_width/2 - 27, 1);
-            {   
+            nk_layout_row_dynamic(nk_ctx, 30, 1);
+            {
                 nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                 if (nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_CALCULATE][language_id])) {                    
                     // parse input
@@ -117,18 +145,36 @@ void zhbk_app_run(void) {
         nk_end(nk_ctx);
 
         // describe GUI: output window (calculations)
-        if(calculate_button_pressed) {
-            if(nk_begin_titled(nk_ctx, WINDOW_TITLE "2", zhbk_label[ZHBK_LABEL_OUTPUT][language_id], nk_rect(WINDOW_WIDTH/2 + 5, 5, WINDOW_WIDTH/2 - 10, WINDOW_HEIGHT*5/6), WINDOW_FLAGS)) {
+        if (calculate_button_pressed) {
+            if (nk_begin_titled(nk_ctx, WINDOW_TITLE "2", zhbk_label[ZHBK_LABEL_OUTPUT][language_id], nk_rect(WINDOW_WIDTH/2.1 + 5, 5, WINDOW_WIDTH/1.9 - 10, WINDOW_HEIGHT - 10), WINDOW_FLAGS)) {
                 // text: variable | input | text: measure unit
-                nk_layout_row_static(nk_ctx, 28, 120, 3);
                 {
+                    // create layout template
+                    nk_layout_row_template_begin(nk_ctx, 28);
+                    nk_layout_row_template_push_variable(nk_ctx, 364);
+                    nk_layout_row_template_push_static(nk_ctx, 81);
+                    nk_layout_row_template_push_static(nk_ctx, 100);
+                    nk_layout_row_template_end(nk_ctx);
+
                     // generate input rows
                     VT_FOREACH(i, ZHBK_LABEL_MAIN_BEAM_LENGTH, ZHBK_LABEL_ARMATURA_AS2_N+1) {
                         nk_label(nk_ctx, zhbk_label[i][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                         nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_READ_ONLY, zhbk_data_text[i], sizeof(zhbk_data_text[i]), nk_filter_float);
 
                         // measure unit
-                        const enum ZHBKLabel mu = ZHBK_LABEL_METERS;
+                        enum ZHBKLabel mu = ZHBK_LABEL_MILLIMETERS;
+                        if (i >= ZHBK_LABEL_TEMP_ESTIMATED_LOAD && i <= ZHBK_LABEL_SUM_ESTIMATED_LOAD) {
+                            mu = ZHBK_LABEL_KNM2;
+                        } else if (i == ZHBK_LABEL_BEND_MOMENT_1 || i == ZHBK_LABEL_BEND_MOMENT_2) {
+                            mu = ZHBK_LABEL_KNM;
+                        } else if (i >= ZHBK_LABEL_COEF_KD_1 && i <= ZHBK_LABEL_COEF_KS_2) {
+                            mu = ZHBK_LABEL_NONE;
+                        } else if (i >= ZHBK_LABEL_COEF_AS_1 && i <= ZHBK_LABEL_COEF_AS_2_FACT) {
+                            mu = ZHBK_LABEL_CM2;
+                        } else if (i == ZHBK_LABEL_ARMATURA_AS1_N || i == ZHBK_LABEL_ARMATURA_AS2_N) {
+                            mu = ZHBK_LABEL_SHTUCKA;
+                        }
+                        
                         nk_label(nk_ctx, zhbk_label[mu][language_id], NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                     }
                 }
@@ -466,7 +512,7 @@ float zhbk_get_asx_fact_value(const float coef_as, int32_t *d_armatura, int32_t 
     VT_FOREACH(i, 3, rows) {
         VT_FOREACH(j, 5, 11) {
             const float coef = zhbk_armatura_table[i][j];
-            if(coef_as < coef) {
+            if (coef_as < coef) {
                 coef_as_fact = coef;
                 *d_armatura = zhbk_armatura_table[i][0];
                 *n_armatura = j;

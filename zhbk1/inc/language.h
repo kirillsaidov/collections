@@ -16,6 +16,14 @@ enum ZHBKLabel {
     ZHBK_LABEL_LANGUAGE_KZ,
     ZHBK_LABEL_CALCULATE,
 
+    // theme variables
+    ZHBK_LABEL_THEME,
+    ZHBK_LABEL_THEME_BLACK,
+    ZHBK_LABEL_THEME_WHITE,
+    ZHBK_LABEL_THEME_RED,
+    ZHBK_LABEL_THEME_BLUE,
+    ZHBK_LABEL_THEME_DARK,
+
     // input variables
     ZHBK_LABEL_ZDANIE_L,
     ZHBK_LABEL_ZDANIE_B,
@@ -66,12 +74,15 @@ enum ZHBKLabel {
 
     // measure units
     ZHBK_LABEL_METERS,
+    ZHBK_LABEL_CM2,
     ZHBK_LABEL_KNM2,
+    ZHBK_LABEL_KNM,
     ZHBK_LABEL_KGM3,
     ZHBK_LABEL_COD_BETONA,
     ZHBK_LABEL_MILLIMETERS,
     ZHBK_LABEL_SQUARE_SANTIMETERS,
     ZHBK_LABEL_SHTUCKA,
+    ZHBK_LABEL_NONE,
 
     ZHBK_LABEL_COUNT
 };
@@ -84,6 +95,14 @@ static const char zhbk_label[ZHBK_LABEL_COUNT][ZHBK_LANGAUGE_COUNT][512] = {
     [ZHBK_LABEL_LANGUAGE_RU]             = { "Русский",               "Орысша" }, 
     [ZHBK_LABEL_LANGUAGE_KZ]             = { "Казахский",             "Қазақша" }, 
     [ZHBK_LABEL_CALCULATE]               = { "Рассчитать",            "Есептеу" }, 
+
+    // theme
+    [ZHBK_LABEL_THEME]                    = { "Тема",                 "Тема" }, 
+    [ZHBK_LABEL_THEME_BLACK]              = { "BLACK",                "BLACK" }, 
+    [ZHBK_LABEL_THEME_WHITE]              = { "WHITE",                "WHITE" }, 
+    [ZHBK_LABEL_THEME_RED]                = { "RED",                  "RED" }, 
+    [ZHBK_LABEL_THEME_BLUE]               = { "BLUE",                 "BLUE" }, 
+    [ZHBK_LABEL_THEME_DARK]               = { "DARK",                 "DARK" }, 
 
     // input variables
     [ZHBK_LABEL_ZDANIE_L]                = { "Размер здания - L",                                           "Ғимараттың өлшемі - L" }, 
@@ -135,12 +154,15 @@ static const char zhbk_label[ZHBK_LABEL_COUNT][ZHBK_LANGAUGE_COUNT][512] = {
 
     // measure units
     [ZHBK_LABEL_METERS]                  = { "Метров",          "Метр" },
+    [ZHBK_LABEL_CM2]                     = { "Cм^2",            "Cм^2" },
     [ZHBK_LABEL_KNM2]                    = { "КН/м^2",          "КН/м^2" },
-    [ZHBK_LABEL_KGM3]                    = { "Кг/м^3",          "КН/м^3" },
+    [ZHBK_LABEL_KNM]                     = { "КН/м",            "КН/м" },
+    [ZHBK_LABEL_KGM3]                    = { "Кг/м^3",          "Кг/м^3" },
     [ZHBK_LABEL_COD_BETONA]              = { "Класс бетона",    "Бетон класы" },
     [ZHBK_LABEL_MILLIMETERS]             = { "Миллиметров",     "Миллиметр" },
     [ZHBK_LABEL_SQUARE_SANTIMETERS]      = { "См^2",            "См^2" },
     [ZHBK_LABEL_SHTUCKA]                 = { "Шт",              "Дана" },
+    [ZHBK_LABEL_NONE]                    = { "",                "" },
 };
 
 #endif // ZHBK_LANGUAGE_H
