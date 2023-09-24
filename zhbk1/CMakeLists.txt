@@ -19,9 +19,13 @@ find_package(glfw3 REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 
-# if(WIN32)
-# 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lglfw3 -lopengl32 -lm -lGLU32 -lGLEW32")
-# endif()
+if(WIN32)
+	find_library(MYSQL_LIBRARY NAMES "libmysql.dll" PATHS "${PROJECT_SOURCE_DIR}/lib")
+	set(MySQL_INCLUDE_DIRS "")
+	set(MySQL_LIBRARIES "${PROJECT_SOURCE_DIR}/lib/libmysql.dll")
+else()
+	find_package(MySQL REQUIRED)
+endif()
 
 # if(APPLE)
 # 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lglfw -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -lm -lGLEW -L/usr/local/lib")
@@ -38,9 +42,15 @@ file(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/inc/*.h)
 # include directories
 include_directories(${PROJECT_SOURCE_DIR}/inc/)
 include_directories(${PROJECT_SOURCE_DIR}/third_party/)
+include_directories(${MySQL_INCLUDE_DIRS})
 
 # building library/binary
 # add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS}) # for libraries
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})   # for binaries
-target_link_libraries(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/lib/libvita.a glfw OpenGL::GL GLEW::GLEW)
+target_link_libraries(
+	${PROJECT_NAME} 
+	${PROJECT_SOURCE_DIR}/lib/libvita.a 
+	${MySQL_LIBRARIES} 
+	glfw OpenGL::GL GLEW::GLEW
+)
 
