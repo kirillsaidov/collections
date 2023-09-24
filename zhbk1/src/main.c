@@ -1,6 +1,6 @@
 #include "main.h"
 
-int32_t main(void) {    
+int32_t main(void) {
     // run app
     zhbk_app_run();
     
@@ -8,6 +8,14 @@ int32_t main(void) {
 }
 
 void zhbk_app_run(void) {
+    // license
+    char keybuf[ZHBK_TMP_BUFLEN] = {0};
+    enum ZHBKStatus license_status = zhbk_license_check(NULL);
+    if(license_status == ZHBK_STATUS_ERROR_NOT_INSTALLED) {
+        return; // don't launch the app until it is installed correctly
+    }
+    // license_status = ZHBK_STATUS_LICENSE_INVALID;
+
     // platform
     static GLFWwindow *window_handle = NULL;
     int32_t window_width = 0, window_height = 0;
@@ -40,12 +48,12 @@ void zhbk_app_run(void) {
     nk_ctx = nk_glfw3_init(&glfw_ctx, window_handle, NK_GLFW3_INSTALL_CALLBACKS);
     {
         // initialize fonts: default font
-        const float font_size = 18;
+        const float font_size = 17;
         struct nk_font_atlas *atlas = NULL;
         struct nk_font_config font_cfg = nk_font_config(font_size);
         nk_glfw3_font_stash_begin(&glfw_ctx, &atlas);
         font_cfg.range = nk_font_cyrillic_glyph_ranges();
-        struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "./assets/ptserif.ttf", font_size, &font_cfg);
+        struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "./assets/droid.ttf", font_size, &font_cfg);
         nk_glfw3_font_stash_end(&glfw_ctx);
         nk_style_set_font(nk_ctx, &roboto->handle);
     }
@@ -64,9 +72,77 @@ void zhbk_app_run(void) {
         // process events
         glfwPollEvents();
         if (glfwGetKey(window_handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-            break;
+            goto zhbk_label_app_run_quit;
         }
         nk_glfw3_new_frame(&glfw_ctx);
+
+        // describe GUI: license window
+        switch (license_status) {
+            case ZHBK_STATUS_SUCCESS: break;
+            case ZHBK_STATUS_ERROR_UNKNOWN:
+                {
+                    if(nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_ERROR][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/4), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
+                        nk_layout_row_static(nk_ctx, 30, 0.94*WINDOW_WIDTH/3, 1);
+                        {
+                            nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                            nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_ERROR_MSG][language_id], NK_TEXT_ALIGN_MIDDLE | NK_TEXT_ALIGN_CENTERED);
+                            nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                            if(nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { goto zhbk_label_app_run_quit; }
+                        }
+                    }
+                    nk_end(nk_ctx);
+                }
+                goto zhbk_label_app_run_render;
+            
+            case ZHBK_STATUS_ERROR_NETWORK:
+                {
+                    if(nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_ERROR][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/4), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
+                        nk_layout_row_static(nk_ctx, 30, 0.94*WINDOW_WIDTH/3, 1);
+                        {
+                            nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                            nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_ERROR_NETWORK_MSG][language_id], NK_TEXT_ALIGN_MIDDLE | NK_TEXT_ALIGN_CENTERED);
+                            nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                            if(nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { goto zhbk_label_app_run_quit; }
+                        }
+                    }
+                    nk_end(nk_ctx);
+                }
+                goto zhbk_label_app_run_render;
+            case ZHBK_STATUS_LICENSE_NOT_FOUND:
+                {
+                    if(nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_ERROR][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/4), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
+                        nk_layout_row_static(nk_ctx, 30, 0.94*WINDOW_WIDTH/3, 1);
+                        {
+                            nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_LICENSE_MSG][language_id], NK_TEXT_ALIGN_MIDDLE | NK_TEXT_ALIGN_CENTERED);
+                            nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, keybuf, sizeof(keybuf), nk_filter_default);
+                            nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                            if(nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { 
+                                printf("key: [%s]\n", keybuf);
+                                license_status = zhbk_license_check(keybuf);
+                                goto case license_status; 
+                            }
+                        }
+                    }
+                    nk_end(nk_ctx);
+                }
+                goto zhbk_label_app_run_render;
+            case ZHBK_STATUS_LICENSE_INVALID:
+                {
+                    if(nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_ERROR][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/4), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
+                        nk_layout_row_static(nk_ctx, 28, 0.94*WINDOW_WIDTH/3, 1);
+                        {
+                            nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                            nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_LICENSE_INVALID_MSG][language_id], NK_TEXT_ALIGN_MIDDLE | NK_TEXT_ALIGN_CENTERED);
+                            nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
+                            if(nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { goto zhbk_label_app_run_quit; }
+                        }
+                    }
+                    nk_end(nk_ctx);
+                }
+                goto zhbk_label_app_run_render;
+            default:
+                break;
+        }
 
         // describe GUI: input window
         if (nk_begin_titled(nk_ctx, WINDOW_TITLE "1", zhbk_label[ZHBK_LABEL_INPUT][language_id], nk_rect(5, 5, WINDOW_WIDTH/2.1 - 5, WINDOW_HEIGHT - 10), WINDOW_FLAGS)) {
@@ -182,6 +258,7 @@ void zhbk_app_run(void) {
             nk_end(nk_ctx);
         }
 
+zhbk_label_app_run_render:
         // render GUI
         glfwGetWindowSize(window_handle, &window_width, &window_height);
         glViewport(0, 0, window_width, window_height);
@@ -191,6 +268,7 @@ void zhbk_app_run(void) {
         glfwSwapBuffers(window_handle);
     }
 
+zhbk_label_app_run_quit:
     // cleanup
     nk_glfw3_shutdown(&glfw_ctx);
     glfwTerminate();
@@ -523,5 +601,94 @@ float zhbk_get_asx_fact_value(const float coef_as, int32_t *d_armatura, int32_t 
     }
 
     return coef_as_fact;
+}
+
+enum ZHBKStatus zhbk_license_check(const char *const key) {
+    // check if app was installed
+    if(!vt_path_exists(ZHBK_INSTALL_FOLDER)) return ZHBK_STATUS_ERROR_NOT_INSTALLED;
+
+    // check local license file
+    if(key == NULL) {
+        if(vt_path_exists(ZHBK_LICENSE_FILE)) {
+            // check end license date
+            return ZHBK_STATUS_SUCCESS;
+        }
+        return ZHBK_STATUS_LICENSE_NOT_FOUND;
+    }
+
+    /* If key is not NULL, 
+     * then we need to check for validity of a license on remote server.
+    */
+
+    // create connection handle
+    MYSQL mysql;
+    if(mysql_init(&mysql) == NULL) {
+        return ZHBK_STATUS_ERROR_UNKNOWN;
+    }
+
+    // connect to server
+    if(mysql_real_connect(&mysql, "sql12.freemysqlhosting.net", "username", "password", "dbname", 0, NULL, 0) == NULL) {
+        return ZHBK_STATUS_ERROR_NETWORK;
+    }
+
+    // check remote license
+    enum ZHBKStatus status = zhbk_license_check_key(&mysql, key);
+    if(status != ZHBK_STATUS_SUCCESS) goto zhbk_label_license_check;
+
+    // create license file
+    vt_file_write(ZHBK_LICENSE_FILE, "license");
+    
+    // update remove license
+    status = zhbk_license_update_key(&mysql, key);
+    if(status != ZHBK_STATUS_SUCCESS) goto zhbk_label_license_check;
+
+zhbk_label_license_check:
+    // close connection
+    mysql_close(&mysql);
+
+    return status;
+}
+
+enum ZHBKStatus zhbk_license_check_key(MYSQL* mysql, const char *const key) {
+    // create query
+    char query[ZHBK_TMP_BUFLEN] = {0};
+    snprintf(query, ZHBK_TMP_BUFLEN, "SELECT COUNT(*) > 0 FROM __keys__ WHERE __key__='%s' AND __active__=0", key);
+    
+    // query
+    if(mysql_query(mysql, query) != 0) {
+        return ZHBK_STATUS_ERROR_NETWORK;
+    }
+
+    // retreive query result
+    MYSQL_RES *res = mysql_store_result(mysql);
+    if(res == NULL) {
+        return ZHBK_STATUS_ERROR_UNKNOWN;
+    }
+
+    // save status
+    enum ZHBKStatus status = ZHBK_STATUS_SUCCESS;
+
+    // check result
+    MYSQL_ROW row = mysql_fetch_row(res);
+    if(row == NULL) { status = ZHBK_STATUS_ERROR_UNKNOWN; goto zhbk_label_license_check_key; }
+    if(row[0][0] != '1') { status = ZHBK_STATUS_LICENSE_INVALID; goto zhbk_label_license_check_key; }
+
+zhbk_label_license_check_key:
+    mysql_free_result(res);
+    
+    return status;
+}
+
+enum ZHBKStatus zhbk_license_update_key(MYSQL* mysql, const char *const key) {
+    // create query
+    char query[ZHBK_TMP_BUFLEN] = {0};
+    snprintf(query, ZHBK_TMP_BUFLEN, "UPDATE __keys__ SET __active__=1 WHERE __key__='%s'", key);
+    
+    // query
+    if (mysql_query(mysql, query) != 0) {
+        return ZHBK_STATUS_ERROR_NETWORK;
+    }
+
+    return ZHBK_STATUS_SUCCESS;
 }
 

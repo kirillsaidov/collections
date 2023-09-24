@@ -22,6 +22,12 @@
 #include "tabledata.h"
 #include "language.h"
 
+#if defined(_WIN32)
+    #include "mysql/mysql.h"
+#else
+    #include <mysql/mysql.h>
+#endif
+
 // window data
 #define WINDOW_TITLE "ZHBK CALC"
 #define WINDOW_WIDTH 1280
@@ -42,6 +48,7 @@
 #define MM2CM(m) (m / 10)
 
 // ditto
+#define ZHBK_TMP_BUFLEN 512
 #define ZHBK_INPUT_LABEL_LENGTH 32
 
 // theme style
@@ -186,4 +193,23 @@ extern float zhbk_round_50(const float value);
 extern float zhbk_get_kd_class_value(const enum ZHBKKdClassHardness kd_class, const float coef_kd);
 extern float zhbk_get_asx_fact_value(const float coef_as, int32_t *d_armatura, int32_t *n_armatura);
 
+#define ZHBK_INSTALL_FOLDER "C:\\Program Files\\ZHBK"
+#define ZHBK_LICENSE_FILE "C:\\Program Files\\ZHBK\\zhbk.license"
+
+enum ZHBKStatus {
+    ZHBK_STATUS_ERROR_UNKNOWN,
+    ZHBK_STATUS_ERROR_NETWORK,
+    ZHBK_STATUS_ERROR_NOT_INSTALLED,
+    ZHBK_STATUS_LICENSE_INVALID,
+    ZHBK_STATUS_LICENSE_NOT_FOUND,
+    ZHBK_STATUS_SUCCESS,
+    ZHBK_STATUS_COUNT
+};
+
+// mysql
+extern enum ZHBKStatus zhbk_license_check(const char *const key);
+extern enum ZHBKStatus zhbk_license_check_key(MYSQL* mysql, const char *const key);
+extern enum ZHBKStatus zhbk_license_update_key(MYSQL* mysql, const char *const key);
+
 #endif // ZHBK_MAIN_H
+

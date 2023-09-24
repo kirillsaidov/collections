@@ -8,13 +8,18 @@ enum ZHBKLanguage {
 };
 
 enum ZHBKLabel {
-    // labels
+    // window name
+    ZHBK_LABEL_ERROR,
+    ZHBK_LABEL_LICENSE,
     ZHBK_LABEL_INPUT,
     ZHBK_LABEL_OUTPUT,
+    
+    // labels
     ZHBK_LABEL_LANGUAGE,
     ZHBK_LABEL_LANGUAGE_RU,
     ZHBK_LABEL_LANGUAGE_KZ,
     ZHBK_LABEL_CALCULATE,
+    ZHBK_LABEL_OK,
 
     // theme variables
     ZHBK_LABEL_THEME,
@@ -84,17 +89,28 @@ enum ZHBKLabel {
     ZHBK_LABEL_SHTUCKA,
     ZHBK_LABEL_NONE,
 
+    // error msg
+    ZHBK_LABEL_ERROR_MSG,
+    ZHBK_LABEL_ERROR_NETWORK_MSG,
+    ZHBK_LABEL_LICENSE_MSG,
+    ZHBK_LABEL_LICENSE_INVALID_MSG,
+
     ZHBK_LABEL_COUNT
 };
 
 static const char zhbk_label[ZHBK_LABEL_COUNT][ZHBK_LANGAUGE_COUNT][512] = {
-    // label                                 russian             kazakh
+    // window title                             russian                kazakh
+    [ZHBK_LABEL_ERROR]                   = { "Внимание!",             "Назар аударыңыз!" }, 
+    [ZHBK_LABEL_LICENSE]                 = { "Активируйте лицензию",   "Лицензияны іске қосыңыз" }, 
     [ZHBK_LABEL_INPUT]                   = { "Введите данные",        "Деректерді енгізіңіз" }, 
     [ZHBK_LABEL_OUTPUT]                  = { "Результаты расчёта",    "Есептеу нәтижелері" }, 
+    
+    // label
     [ZHBK_LABEL_LANGUAGE]                = { "Язык",                  "Тіл" }, 
     [ZHBK_LABEL_LANGUAGE_RU]             = { "Русский",               "Орысша" }, 
     [ZHBK_LABEL_LANGUAGE_KZ]             = { "Казахский",             "Қазақша" }, 
     [ZHBK_LABEL_CALCULATE]               = { "Рассчитать",            "Есептеу" }, 
+    [ZHBK_LABEL_OK]                      = { "Oк",                   "Ок" }, 
 
     // theme
     [ZHBK_LABEL_THEME]                    = { "Тема",                 "Тема" }, 
@@ -163,6 +179,12 @@ static const char zhbk_label[ZHBK_LABEL_COUNT][ZHBK_LANGAUGE_COUNT][512] = {
     [ZHBK_LABEL_SQUARE_SANTIMETERS]      = { "См^2",            "См^2" },
     [ZHBK_LABEL_SHTUCKA]                 = { "Шт",              "Дана" },
     [ZHBK_LABEL_NONE]                    = { "",                "" },
+
+    // error msg
+    [ZHBK_LABEL_ERROR_MSG]               = { "Возникла системная ошибка!",                            "Жүйелік қате пайда болды!" }, 
+    [ZHBK_LABEL_ERROR_NETWORK_MSG]       = { "Плохое интернет соединение! Повторите попытку позже.",    "Нашар интернет байланысы! Кейінірек қайталап көріңіз.!" }, 
+    [ZHBK_LABEL_LICENSE_MSG]             = { "Введите ключ активации:",                               "Белсендіру кілтін енгізіңіз:" }, 
+    [ZHBK_LABEL_LICENSE_INVALID_MSG]     = { "Неверный ключ активации!",                              "Іске қосу кілті дұрыс емес!" }, 
 };
 
 #endif // ZHBK_LANGUAGE_H
