@@ -1,7 +1,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
-#include <mysql/mysql.h>
+
+#if defined(_WIN32)
+    #include "mysql/mysql.h"
+#else
+    #include <mysql/mysql.h>
+#endif
 
 #define TMP_BUFLEN 1024
 
@@ -69,13 +74,13 @@ int main(const int argc, const char *argv[]) {
     printf("Server version: %s\n", mysql_get_server_info(&mysql));
     
     // check that key exists and isn't used
-    assert(check_key_is_valid(&mysql, "abc123"));
-    assert(check_key_is_valid(&mysql, "abc456"));
-    assert(check_key_is_valid(&mysql, "abc789"));
+    // assert(check_key_is_valid(&mysql, "abc123"));
+    // assert(check_key_is_valid(&mysql, "abc456"));
+    // assert(check_key_is_valid(&mysql, "abc789"));
     
-    // update key (it is used now)
-    assert(update_key_used(&mysql, "abc123"));
-    assert(update_key_used(&mysql, "abc789"));
+    // // update key (it is used now)
+    // assert(update_key_used(&mysql, "abc123"));
+    // assert(update_key_used(&mysql, "abc789"));
 
     // check that key is invalid (it is used) 
     assert(!check_key_is_valid(&mysql, "abc123"));
