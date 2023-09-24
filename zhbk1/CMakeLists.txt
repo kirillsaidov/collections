@@ -23,6 +23,8 @@ if(WIN32)
 	find_library(MYSQL_LIBRARY NAMES "libmysql.dll" PATHS "${PROJECT_SOURCE_DIR}/lib")
 	set(MySQL_INCLUDE_DIRS "")
 	set(MySQL_LIBRARIES "${PROJECT_SOURCE_DIR}/lib/libmysql.dll")
+
+	set(CMAKE_C_FLAGS "-mwindows")
 else()
 	find_package(MySQL REQUIRED)
 endif()

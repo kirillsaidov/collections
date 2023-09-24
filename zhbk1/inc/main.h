@@ -193,8 +193,8 @@ extern float zhbk_round_50(const float value);
 extern float zhbk_get_kd_class_value(const enum ZHBKKdClassHardness kd_class, const float coef_kd);
 extern float zhbk_get_asx_fact_value(const float coef_as, int32_t *d_armatura, int32_t *n_armatura);
 
-#define ZHBK_INSTALL_FOLDER "C:\\Program Files\\ZHBK"
-#define ZHBK_LICENSE_FILE "C:\\Program Files\\ZHBK\\zhbk.license"
+#define ZHBK_INSTALL_FOLDER "C:\\Users\\Public\\AppData\\ZHBK"
+#define ZHBK_LICENSE_FILE "C:\\Users\\Public\\AppData\\ZHBK\\zhbk.license"
 
 enum ZHBKStatus {
     ZHBK_STATUS_ERROR_UNKNOWN,

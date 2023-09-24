@@ -53,7 +53,7 @@ void zhbk_app_run(void) {
         struct nk_font_config font_cfg = nk_font_config(font_size);
         nk_glfw3_font_stash_begin(&glfw_ctx, &atlas);
         font_cfg.range = nk_font_cyrillic_glyph_ranges();
-        struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "./assets/droid.ttf", font_size, &font_cfg);
+        struct nk_font *roboto = nk_font_atlas_add_from_file(atlas, "../assets/droid.ttf", font_size, &font_cfg);
         nk_glfw3_font_stash_end(&glfw_ctx);
         nk_style_set_font(nk_ctx, &roboto->handle);
     }
@@ -119,7 +119,6 @@ void zhbk_app_run(void) {
                             if(nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { 
                                 printf("key: [%s]\n", keybuf);
                                 license_status = zhbk_license_check(keybuf);
-                                goto case license_status; 
                             }
                         }
                     }
@@ -627,7 +626,7 @@ enum ZHBKStatus zhbk_license_check(const char *const key) {
     }
 
     // connect to server
-    if(mysql_real_connect(&mysql, "sql12.freemysqlhosting.net", "username", "password", "dbname", 0, NULL, 0) == NULL) {
+    if(mysql_real_connect(&mysql, "sql12.freemysqlhosting.net", "sql12648624", "XlApymaMIM", "sql12648624", 0, NULL, 0) == NULL) {
         return ZHBK_STATUS_ERROR_NETWORK;
     }
 
