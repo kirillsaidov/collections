@@ -19,14 +19,9 @@
 
 #include <math.h>
 #include "vita/vita.h"
+#include "mysql/mysql.h"
 #include "tabledata.h"
 #include "language.h"
-
-// #if defined(_WIN32)
-    #include "mysql/mysql.h"
-// #else
-//     #include <mysql/mysql.h>
-// #endif
 
 // window data
 #define WINDOW_TITLE "ZHBK CALC"
@@ -193,8 +188,13 @@ extern float zhbk_round_50(const float value);
 extern float zhbk_get_kd_class_value(const enum ZHBKKdClassHardness kd_class, const float coef_kd);
 extern float zhbk_get_asx_fact_value(const float coef_as, int32_t *d_armatura, int32_t *n_armatura);
 
-#define ZHBK_INSTALL_FOLDER "C:\\Users\\Public\\AppData\\ZHBK"
-#define ZHBK_LICENSE_FILE "C:\\Users\\Public\\AppData\\ZHBK\\zhbk.license"
+#if defined(_WIN32)
+    #define ZHBK_INSTALL_FOLDER "C:\\Users\\Public\\AppData\\ZHBK"
+    #define ZHBK_LICENSE_FILE "C:\\Users\\Public\\AppData\\ZHBK\\zhbk.license"
+#else
+    #define ZHBK_INSTALL_FOLDER "/Users/Shared/ZHBK"
+    #define ZHBK_LICENSE_FILE "/Users/Shared/ZHBK/zhbk.license"
+#endif
 
 enum ZHBKStatus {
     ZHBK_STATUS_ERROR_UNKNOWN,
@@ -202,13 +202,15 @@ enum ZHBKStatus {
     ZHBK_STATUS_ERROR_NOT_INSTALLED,
     ZHBK_STATUS_LICENSE_INVALID,
     ZHBK_STATUS_LICENSE_NOT_FOUND,
+    ZHBK_STATUS_LICENSE_EXPIRED,
     ZHBK_STATUS_SUCCESS,
     ZHBK_STATUS_COUNT
 };
 
 // mysql
 extern enum ZHBKStatus zhbk_license_check(const char *const key);
-extern enum ZHBKStatus zhbk_license_check_key(MYSQL* mysql, const char *const key);
+extern enum ZHBKStatus zhbk_license_check_key(MYSQL* mysql, const char *const key, int32_t *period);
+extern enum ZHBKStatus zhbk_license_check_key_local(void);
 extern enum ZHBKStatus zhbk_license_update_key(MYSQL* mysql, const char *const key);
 
 #endif // ZHBK_MAIN_H

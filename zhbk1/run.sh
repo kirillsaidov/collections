@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./build.sh && ./bin/zhbk1
+./build.sh && cd bin && ./zhbk1
 
 
 

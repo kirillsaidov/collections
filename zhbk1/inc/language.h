@@ -94,7 +94,8 @@ enum ZHBKLabel {
     ZHBK_LABEL_ERROR_NETWORK_MSG,
     ZHBK_LABEL_LICENSE_MSG,
     ZHBK_LABEL_LICENSE_INVALID_MSG,
-
+    ZHBK_LABEL_LICENSE_EXPIRED_MSG,
+    
     ZHBK_LABEL_COUNT
 };
 
@@ -182,9 +183,10 @@ static const char zhbk_label[ZHBK_LABEL_COUNT][ZHBK_LANGAUGE_COUNT][512] = {
 
     // error msg
     [ZHBK_LABEL_ERROR_MSG]               = { "Возникла системная ошибка!",                            "Жүйелік қате пайда болды!" }, 
-    [ZHBK_LABEL_ERROR_NETWORK_MSG]       = { "Плохое интернет соединение! Повторите попытку позже.",    "Нашар интернет байланысы! Кейінірек қайталап көріңіз.!" }, 
+    [ZHBK_LABEL_ERROR_NETWORK_MSG]       = { "Плохое интернет соединение! Повторите попытку позже.",  "Нашар интернет байланысы! Кейінірек қайталап көріңіз." }, 
     [ZHBK_LABEL_LICENSE_MSG]             = { "Введите ключ активации:",                               "Белсендіру кілтін енгізіңіз:" }, 
     [ZHBK_LABEL_LICENSE_INVALID_MSG]     = { "Неверный ключ активации!",                              "Іске қосу кілті дұрыс емес!" }, 
+    [ZHBK_LABEL_LICENSE_EXPIRED_MSG]     = { "Срок лицензии истёк!",                                  "Лицензияның мерзімі аяқталды!" }, 
 };
 
 #endif // ZHBK_LANGUAGE_H

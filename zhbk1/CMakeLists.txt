@@ -24,18 +24,8 @@ if(WIN32)
 	set(MySQL_LIBRARIES "${PROJECT_SOURCE_DIR}/lib/libmysql.dll")
 	set(CMAKE_C_FLAGS "-mwindows")
 else()
-	find_library(
-		MySQL_LIBRARIES
-		NAMES "mysqlclient" "mysqlclient_r"
-		PATHS "/lib/mysql"
-			"/lib64/mysql"
-			"/usr/lib/mysql"
-			"/usr/lib64/mysql"
-			"/usr/local/lib/mysql"
-			"/usr/local/lib64/mysql"
-			"/usr/mysql/lib/mysql"
-			"/usr/mysql/lib64/mysql"
-	)
+	set(MySQL_LIBRARIES "")
+	SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -L/usr/local/Cellar/mysql/8.1.0/lib -lmysqlclient")
 endif()
 
 # if(APPLE)
@@ -60,7 +50,7 @@ add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})   # for binaries
 target_link_libraries(
 	${PROJECT_NAME} 
 	${PROJECT_SOURCE_DIR}/lib/libvita.a 
-	${MySQL_LIBRARIES} 
+	${MySQL_LIBRARIES}  
 	glfw OpenGL::GL GLEW::GLEW
 )
 
