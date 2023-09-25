@@ -22,11 +22,11 @@
 #include "tabledata.h"
 #include "language.h"
 
-#if defined(_WIN32)
+// #if defined(_WIN32)
     #include "mysql/mysql.h"
-#else
-    #include <mysql/mysql.h>
-#endif
+// #else
+//     #include <mysql/mysql.h>
+// #endif
 
 // window data
 #define WINDOW_TITLE "ZHBK CALC"

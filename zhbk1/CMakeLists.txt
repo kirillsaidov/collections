@@ -21,12 +21,31 @@ find_package(OpenGL REQUIRED)
 
 if(WIN32)
 	find_library(MYSQL_LIBRARY NAMES "libmysql.dll" PATHS "${PROJECT_SOURCE_DIR}/lib")
-	set(MySQL_INCLUDE_DIRS "")
+	# set(MySQL_INCLUDE_DIRS "")
 	set(MySQL_LIBRARIES "${PROJECT_SOURCE_DIR}/lib/libmysql.dll")
 
 	set(CMAKE_C_FLAGS "-mwindows")
 else()
-	find_package(MySQL REQUIRED)
+	# find_path(
+	# 	MySQL_INCLUDE_DIRS
+	# 	NAMES "mysql.h"
+	# 	PATHS "/usr/include/mysql"
+	# 		"/usr/local/include/mysql"
+	# 		"/usr/mysql/include/mysql" 
+	# )
+
+	find_library(
+		MySQL_LIBRARIES
+		NAMES "mysqlclient" "mysqlclient_r"
+		PATHS "/lib/mysql"
+			"/lib64/mysql"
+			"/usr/lib/mysql"
+			"/usr/lib64/mysql"
+			"/usr/local/lib/mysql"
+			"/usr/local/lib64/mysql"
+			"/usr/mysql/lib/mysql"
+			"/usr/mysql/lib64/mysql"
+	)
 endif()
 
 # if(APPLE)
@@ -44,7 +63,7 @@ file(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/inc/*.h)
 # include directories
 include_directories(${PROJECT_SOURCE_DIR}/inc/)
 include_directories(${PROJECT_SOURCE_DIR}/third_party/)
-include_directories(${MySQL_INCLUDE_DIRS})
+# include_directories(${MySQL_INCLUDE_DIRS})
 
 # building library/binary
 # add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS}) # for libraries
