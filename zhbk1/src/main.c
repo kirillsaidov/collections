@@ -46,13 +46,13 @@ void zhbk_app_run(void) {
     // initialize Nuklear GLFW context
     nk_ctx = nk_glfw3_init(&glfw_ctx, window_handle, NK_GLFW3_INSTALL_CALLBACKS);
     {
-        // initialize fonts: default font
+        // initialize fonts: custom font
         const float font_size = 17;
         struct nk_font_atlas *atlas = NULL;
         struct nk_font_config font_cfg = nk_font_config(font_size);
         nk_glfw3_font_stash_begin(&glfw_ctx, &atlas);
         font_cfg.range = nk_font_cyrillic_glyph_ranges();
-        struct nk_font *font = nk_font_atlas_add_from_file(atlas, "../assets/droid.ttf", font_size, &font_cfg);
+        struct nk_font *font = nk_font_atlas_add_from_file(atlas, "./droid.ttf", font_size, &font_cfg);
         assert(font != NULL);
         nk_glfw3_font_stash_end(&glfw_ctx);
         nk_style_set_font(nk_ctx, &font->handle);

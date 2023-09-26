@@ -35,11 +35,11 @@ int main(void) {
 
     LOG("Installing the software...\n");
     LOG("Checking package contents...\n");
-    
+
     // check all files in install package
     vt_plist_t *dirlist = vt_plist_create(ZHBK_PACKAGE_FILES, malloctr);
     dirlist = vt_path_listdir(dirlist, ZHBK_PACKAGE_FOLDER, true);
-    if (vt_plist_len(dirlist) != ZHBK_PACKAGE_FILES) {
+    if (dirlist == NULL || vt_plist_len(dirlist) != ZHBK_PACKAGE_FILES) {
         LOG("Broken package! Cancel operation...\n");
         goto label_main_done;
     }
