@@ -11,7 +11,7 @@ void zhbk_app_run(void) {
     // license
     char keybuf[ZHBK_TMP_BUFLEN] = {0};
     enum ZHBKStatus license_status = zhbk_license_check(NULL);
-    if(license_status == ZHBK_STATUS_ERROR_NOT_INSTALLED) {
+    if (license_status == ZHBK_STATUS_ERROR_NOT_INSTALLED) {
         return; // don't launch the app until it is installed correctly
     }
 
@@ -84,13 +84,13 @@ void zhbk_app_run(void) {
             case ZHBK_STATUS_SUCCESS: break;
             case ZHBK_STATUS_ERROR_UNKNOWN:
                 {
-                    if(nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_ERROR][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/3.8), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
+                    if (nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_ERROR][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/3.8), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
                         nk_layout_row_static(nk_ctx, 30, 0.94*WINDOW_WIDTH/3, 1);
                         {
                             nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                             nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_ERROR_MSG][language_id], NK_TEXT_ALIGN_MIDDLE | NK_TEXT_ALIGN_CENTERED);
                             nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                            if(nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { goto zhbk_label_app_run_quit; }
+                            if (nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { goto zhbk_label_app_run_quit; }
                         }
                     }
                     nk_end(nk_ctx);
@@ -98,13 +98,13 @@ void zhbk_app_run(void) {
                 goto zhbk_label_app_run_render;
             case ZHBK_STATUS_ERROR_NETWORK:
                 {
-                    if(nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_ERROR][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/3.8), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
+                    if (nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_ERROR][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/3.8), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
                         nk_layout_row_static(nk_ctx, 30, 0.94*WINDOW_WIDTH/3, 1);
                         {
                             nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                             nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_ERROR_NETWORK_MSG][language_id], NK_TEXT_ALIGN_MIDDLE | NK_TEXT_ALIGN_CENTERED);
                             nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                            if(nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { goto zhbk_label_app_run_quit; }
+                            if (nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { goto zhbk_label_app_run_quit; }
                         }
                     }
                     nk_end(nk_ctx);
@@ -112,13 +112,13 @@ void zhbk_app_run(void) {
                 goto zhbk_label_app_run_render;
             case ZHBK_STATUS_LICENSE_NOT_FOUND:
                 {
-                    if(nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_LICENSE][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/3.8), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
+                    if (nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_LICENSE][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/3.8), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
                         nk_layout_row_static(nk_ctx, 30, 0.94*WINDOW_WIDTH/3, 1);
                         {
                             nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_LICENSE_MSG][language_id], NK_TEXT_ALIGN_MIDDLE | NK_TEXT_ALIGN_CENTERED);
                             nk_edit_string_zero_terminated(nk_ctx, NK_EDIT_BOX, keybuf, sizeof(keybuf), nk_filter_default);
                             nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                            if(nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { 
+                            if (nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { 
                                 license_status = zhbk_license_check(keybuf);
                             }
                         }
@@ -128,13 +128,13 @@ void zhbk_app_run(void) {
                 goto zhbk_label_app_run_render;
             case ZHBK_STATUS_LICENSE_INVALID:
                 {
-                    if(nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_ERROR][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/3.8), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
+                    if (nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_ERROR][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/3.8), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
                         nk_layout_row_static(nk_ctx, 28, 0.94*WINDOW_WIDTH/3, 1);
                         {
                             nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                             nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_LICENSE_INVALID_MSG][language_id], NK_TEXT_ALIGN_MIDDLE | NK_TEXT_ALIGN_CENTERED);
                             nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                            if(nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { goto zhbk_label_app_run_quit; }
+                            if (nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { goto zhbk_label_app_run_quit; }
                         }
                     }
                     nk_end(nk_ctx);
@@ -142,13 +142,13 @@ void zhbk_app_run(void) {
                 goto zhbk_label_app_run_render;
             case ZHBK_STATUS_LICENSE_EXPIRED:
                 {
-                    if(nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_LICENSE][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/3.8), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
+                    if (nk_begin_titled(nk_ctx, WINDOW_TITLE, zhbk_label[ZHBK_LABEL_LICENSE][language_id], nk_rect(WINDOW_WIDTH/2-WINDOW_WIDTH/3/2, WINDOW_HEIGHT/2-WINDOW_HEIGHT/4/2, WINDOW_WIDTH/3, WINDOW_HEIGHT/3.8), NK_WINDOW_BORDER | NK_WINDOW_TITLE)) {
                         nk_layout_row_static(nk_ctx, 30, 0.94*WINDOW_WIDTH/3, 1);
                         {
                             nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
                             nk_label(nk_ctx, zhbk_label[ZHBK_LABEL_LICENSE_EXPIRED_MSG][language_id], NK_TEXT_ALIGN_MIDDLE | NK_TEXT_ALIGN_CENTERED);
                             nk_label(nk_ctx, "", NK_TEXT_ALIGN_LEFT | NK_TEXT_ALIGN_MIDDLE);
-                            if(nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { license_status = ZHBK_STATUS_LICENSE_NOT_FOUND; }
+                            if (nk_button_label(nk_ctx, zhbk_label[ZHBK_LABEL_OK][language_id])) { license_status = ZHBK_STATUS_LICENSE_NOT_FOUND; }
                         }
                     }
                     nk_end(nk_ctx);
@@ -619,10 +619,10 @@ float zhbk_get_asx_fact_value(const float coef_as, int32_t *d_armatura, int32_t 
 
 enum ZHBKStatus zhbk_license_check(const char *const key) {
     // check if app was installed
-    if(!vt_path_exists(ZHBK_INSTALL_FOLDER)) return ZHBK_STATUS_ERROR_NOT_INSTALLED;
+    if (!vt_path_exists(ZHBK_INSTALL_FOLDER)) return ZHBK_STATUS_ERROR_NOT_INSTALLED;
 
     // check local license file
-    if(key == NULL) {
+    if (key == NULL) {
         return zhbk_license_check_key_local();
     }
 
@@ -632,19 +632,19 @@ enum ZHBKStatus zhbk_license_check(const char *const key) {
 
     // create connection handle
     MYSQL mysql;
-    if(mysql_init(&mysql) == NULL) {
+    if (mysql_init(&mysql) == NULL) {
         return ZHBK_STATUS_ERROR_UNKNOWN;
     }
 
     // connect to server
-    if(mysql_real_connect(&mysql, "sql12.freemysqlhosting.net", "sql12648624", "XlApymaMIM", "sql12648624", 0, NULL, 0) == NULL) {
+    if (mysql_real_connect(&mysql, "sql12.freemysqlhosting.net", "sql12648624", "XlApymaMIM", "sql12648624", 0, NULL, 0) == NULL) {
         return ZHBK_STATUS_ERROR_NETWORK;
     }
 
     // check remote license
     int32_t period = 0;
     enum ZHBKStatus status = zhbk_license_check_key(&mysql, key, &period);
-    if(status != ZHBK_STATUS_SUCCESS) goto zhbk_label_license_check;
+    if (status != ZHBK_STATUS_SUCCESS) goto zhbk_label_license_check;
 
     // calculate activation period
     struct VitaDateTime today = vt_datetime_get_now();
@@ -663,7 +663,7 @@ enum ZHBKStatus zhbk_license_check(const char *const key) {
     
     // update remove license
     status = zhbk_license_update_key(&mysql, key);
-    if(status != ZHBK_STATUS_SUCCESS) goto zhbk_label_license_check;
+    if (status != ZHBK_STATUS_SUCCESS) goto zhbk_label_license_check;
 
 zhbk_label_license_check:
     // close connection
@@ -679,13 +679,13 @@ enum ZHBKStatus zhbk_license_check_key(MYSQL* mysql, const char *const key, int3
     snprintf(query, ZHBK_TMP_BUFLEN, "SELECT COUNT(*)>0, tb.__duration__ FROM (SELECT * FROM __keys__ WHERE __key__='%s' AND __active__=0) as tb", key);
 
     // query
-    if(mysql_query(mysql, query) != 0) {
+    if (mysql_query(mysql, query) != 0) {
         return ZHBK_STATUS_ERROR_NETWORK;
     }
 
     // retreive query result
     MYSQL_RES *res = mysql_store_result(mysql);
-    if(res == NULL) {
+    if (res == NULL) {
         return ZHBK_STATUS_ERROR_UNKNOWN;
     }
 
@@ -694,8 +694,8 @@ enum ZHBKStatus zhbk_license_check_key(MYSQL* mysql, const char *const key, int3
 
     // check result
     MYSQL_ROW row = mysql_fetch_row(res);
-    if(row == NULL) { status = ZHBK_STATUS_ERROR_UNKNOWN; goto zhbk_label_license_check_key; }
-    if(row[0][0] != '1') { status = ZHBK_STATUS_LICENSE_INVALID; goto zhbk_label_license_check_key; }
+    if (row == NULL) { status = ZHBK_STATUS_ERROR_UNKNOWN; goto zhbk_label_license_check_key; }
+    if (row[0][0] != '1') { status = ZHBK_STATUS_LICENSE_INVALID; goto zhbk_label_license_check_key; }
     *period = vt_conv_str_to_i32(row[1]);
 
 zhbk_label_license_check_key:
@@ -705,7 +705,7 @@ zhbk_label_license_check_key:
 }
 
 enum ZHBKStatus zhbk_license_check_key_local(void) {
-    if(!vt_path_exists(ZHBK_LICENSE_FILE)) {
+    if (!vt_path_exists(ZHBK_LICENSE_FILE)) {
         return ZHBK_STATUS_LICENSE_NOT_FOUND;
     }
 
