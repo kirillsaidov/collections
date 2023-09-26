@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdbool.h>
 #include "../third_party/vita/vita.h"
 
 #define ZHBK_PACKAGE_FILES (2 + 0)
@@ -21,6 +23,14 @@ int main(void) {
             LOG("Cancel operation...\n");
             goto label_main_done;
         }
+
+        LOG("Removing previous installation...\n");
+
+        // delete install folder
+        if (!vt_path_rmdir_recurse(ZHBK_INSTALL_FOLDER)) {
+            LOG("System error...\n");
+            goto label_main_done;
+        }
     }
 
     LOG("Installing the software...\n");
@@ -29,7 +39,7 @@ int main(void) {
     // check all files in install package
     vt_plist_t *dirlist = vt_plist_create(ZHBK_PACKAGE_FILES, malloctr);
     dirlist = vt_path_listdir(dirlist, ZHBK_PACKAGE_FOLDER, true);
-    if(vt_plist_len(dirlist) != ZHBK_PACKAGE_FILES) {
+    if (vt_plist_len(dirlist) != ZHBK_PACKAGE_FILES) {
         LOG("Broken package! Cancel operation...\n");
         goto label_main_done;
     }
@@ -37,28 +47,32 @@ int main(void) {
     // remove the installer from dirlist
     VT_FOREACH(i, 0, vt_plist_len(dirlist)) {
         vt_str_t *s = (vt_str_t*)vt_plist_get(dirlist, i);
-        if(vt_str_can_find(vt_str_z(s), "install")) {
+        if (vt_str_can_find(vt_str_z(s), "install")) {
             vt_plist_remove(dirlist, i, VT_REMOVE_STRATEGY_FAST);
             break;
         }
     }
 
-    // // create install folder
-    // if (!vt_path_exists(ZHBK_INSTALL_FOLDER) && !vt_path_mkdir(ZHBK_INSTALL_FOLDER)) {
-    //     LOG("System error...\n");
-    //     goto label_main_done;
-    // }
+    // create install folder
+    if (!vt_path_exists(ZHBK_INSTALL_FOLDER) && !vt_path_mkdir(ZHBK_INSTALL_FOLDER)) {
+        LOG("System error...\n");
+        goto label_main_done;
+    }
+
+    LOG("Moving packages...\n");
     
     // move files to install folder
     VT_FOREACH(i, 0, vt_plist_len(dirlist)) {
         vt_str_t *s = (vt_str_t*)vt_plist_get(dirlist, i);
+        vt_str_t *n = vt_str_dup(s);
+        LOG("Found %s\n", vt_str_z(s));
 
-        vt_str_t *n = vt_path_basename(NULL, vt_str_z(n)); // segfaults
+        vt_str_insert(s, ZHBK_PACKAGE_FOLDER, 0);
         vt_str_insert(n, ZHBK_INSTALL_FOLDER, 0);
 
-        LOG("moving from [%s] to [%s]\n", vt_str_z(s), vt_str_z(n));
+        LOG("Moving to: %s\n", vt_str_z(n));
 
-        // vt_path_rename(vt_str_z(s), , );
+        vt_path_rename(vt_str_z(s), vt_str_z(n));
     }
 
     // delete this executable
