@@ -199,7 +199,6 @@ extern float zhbk_get_asx_fact_value(const float coef_as, int32_t *d_armatura, i
 enum ZHBKStatus {
     ZHBK_STATUS_ERROR_UNKNOWN,
     ZHBK_STATUS_ERROR_NETWORK,
-    ZHBK_STATUS_ERROR_NOT_INSTALLED,
     ZHBK_STATUS_LICENSE_INVALID,
     ZHBK_STATUS_LICENSE_NOT_FOUND,
     ZHBK_STATUS_LICENSE_EXPIRED,

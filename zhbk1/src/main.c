@@ -11,9 +11,6 @@ void zhbk_app_run(void) {
     // license
     char keybuf[ZHBK_TMP_BUFLEN] = {0};
     enum ZHBKStatus license_status = zhbk_license_check(NULL);
-    if (license_status == ZHBK_STATUS_ERROR_NOT_INSTALLED) {
-        return; // don't launch the app until it is installed correctly
-    }
 
     // platform
     static GLFWwindow *window_handle = NULL;
@@ -619,7 +616,11 @@ float zhbk_get_asx_fact_value(const float coef_as, int32_t *d_armatura, int32_t 
 
 enum ZHBKStatus zhbk_license_check(const char *const key) {
     // check if app was installed
-    if (!vt_path_exists(ZHBK_INSTALL_FOLDER)) return ZHBK_STATUS_ERROR_NOT_INSTALLED;
+    if (!vt_path_exists(ZHBK_INSTALL_FOLDER)) {
+        return vt_path_mkdir_parents(ZHBK_INSTALL_FOLDER) 
+            ? ZHBK_STATUS_LICENSE_NOT_FOUND 
+            : ZHBK_STATUS_ERROR_UNKNOWN;
+    }
 
     // check local license file
     if (key == NULL) {
