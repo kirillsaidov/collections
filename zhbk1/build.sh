@@ -7,6 +7,3 @@ cmake -S .. -B .;
 
 make
 
-
-
-
