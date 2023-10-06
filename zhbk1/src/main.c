@@ -655,8 +655,6 @@ enum ZHBKStatus zhbk_license_check(const char *const key) {
     printf("period: %d\n", period);
     char timebuf[VT_DATETIME_BUFFER_SIZE] = {0};
     vt_datetime_to_text(expiration_date, timebuf, VT_DATETIME_BUFFER_SIZE);
-    printf("expir.date: %s\n", timebuf);
-    printf("save.expir.date: %ld\n", save_expiration_date);
 
     // create license file
     // vt_file_write(ZHBK_LICENSE_FILE, "license");
