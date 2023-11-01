@@ -5,6 +5,7 @@ build/
 __internal/
 *.DS_Store
 .vscode
+*.out
 
 # Prerequisites
 *.d
