@@ -638,7 +638,7 @@ enum ZHBKStatus zhbk_license_check(const char *const key) {
     }
 
     // connect to server
-    if (mysql_real_connect(&mysql, "***", "***", "***", "***", 0, NULL, 0) == NULL) {
+    if (mysql_real_connect(&mysql, "sql12.freemysqlhosting.net", "sql12648624", "XlApymaMIM", "sql12648624", 0, NULL, 0) == NULL) {
         return ZHBK_STATUS_ERROR_NETWORK;
     }
 

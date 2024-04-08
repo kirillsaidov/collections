@@ -3,14 +3,14 @@
 from deepface import DeepFace
 
 models = [
-    'VGG-Face', 
-    'Facenet', 
-    'Facenet512', 
-    'OpenFace', 
-    'DeepFace', 
-    'DeepID', 
-    'ArcFace', 
-    'Dlib', 
+    'VGG-Face',
+    'Facenet',
+    'Facenet512',
+    'OpenFace',
+    'DeepFace',
+    'DeepID',
+    'ArcFace',
+    'Dlib',
     'SFace',
     'GhostFaceNet',
 ]
@@ -19,8 +19,15 @@ models = [
 if __name__ == '__main__':
     print('starting...')
 
-    dfs = DeepFace.find(img_path = 'img_id1.jpg', db_path = './imgs', model_name=models[1])
+    dfs = DeepFace.find(img_path = './imgs/img_id1.jpg', db_path = './imgs', model_name=models[1])
     print('recognized:', dfs)
+
+    dfs = DeepFace.find(img_path = './imgs/img_id2.jpg', db_path = './imgs', model_name=models[1])
+    print('recognized:', dfs)
+
+    dfs = DeepFace.find(img_path = './imgs/img_id1.jpg', db_path = './imgs', model_name=models[1])
+    print('recognized:', dfs)
+
 
     print('end.')
 
